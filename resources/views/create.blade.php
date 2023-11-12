@@ -8,3 +8,14 @@
     <input type="file" name="image" accept="image/*" required>
     <button type="submit">Upload Image</button>
 </form>
+
+<!-- 例: cat/index.blade.php -->
+
+@foreach ($imageFiles as $image)
+    <img src="{{ asset(str_replace('public', 'storage', $image)) }}" alt="Cat Image">
+    <form method="post" action="{{ route('destroy') }}">
+        @csrf
+        @method('delete')
+        <button type="submit">削除</button>
+    </form>
+@endforeach
