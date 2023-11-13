@@ -13,9 +13,15 @@
 
 @foreach ($imageFiles as $image)
     <img src="{{ asset(str_replace('public', 'storage', $image)) }}" alt="Cat Image">
-    <form method="post" action="{{ route('destroy') }}">
+    {{-- <form method="post" action="{{ route('destroy') }}">
         @csrf
         @method('delete')
         <button type="submit">削除</button>
-    </form>
+    </form> --}}
 @endforeach
+
+@if ($catImages)
+@foreach ($catImages as $catImage)
+    <p>{{ $catImage->title }}</p>
+@endforeach
+@endif
