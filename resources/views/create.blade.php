@@ -12,16 +12,17 @@
 <!-- 例: cat/index.blade.php -->
 
 @foreach ($imageFiles as $image)
-    <img src="{{ asset(str_replace('public', 'storage', $image)) }}" alt="Cat Image">
-    {{-- <form method="post" action="{{ route('destroy') }}">
-        @csrf
-        @method('delete')
-        <button type="submit">削除</button>
-    </form> --}}
+    <img src="{{ asset(str_replace('public', 'storage', $image)) }}" alt="Cat Image" style='height:100px'>
+
 @endforeach
 
 @if ($catImages)
 @foreach ($catImages as $catImage)
+    <p>{{ $catImage->id }}</p>
     <p>{{ $catImage->title }}</p>
+    <form method="post" action="{{ route('create.destroy', ['id'=>$catImage->id]) }}">
+        @csrf
+        <button type="submit">削除</button>
+    </form>
 @endforeach
 @endif

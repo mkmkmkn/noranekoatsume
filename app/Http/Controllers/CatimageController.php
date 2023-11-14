@@ -41,29 +41,19 @@ class CatimageController extends Controller
         return redirect()->route('create.form')->with('success', 'Image uploaded successfully');
     }
     
-    // public function destroy($id)
-    // {
-    //     $catimage = Catimage::find($id);
-    //     $imageName = $catimage->image;
+    public function destroy($id)
+    {
+        $catimage = Catimage::find($id);
+        $imageName = $catimage->image_path;
 
+        // ファイルが存在するか確認
+        // if (Storage::exists($imageName)) {
+            Storage::disk('public')->delete('catimages/' . $imageName);
+            $catimage->delete();
+        // }
 
-    //     Storage::disk('public')->delete('images/' . $item->image);
-
-
-    //     $catimage->delete();
-    //     // 削除する画像のパスを生成
-    //     $filePath = 'public/catimages/' . $imageName;
-
-    //     // ファイルが存在するか確認
-    //     if (Storage::exists($filePath)) {
-    //         // ファイルを削除
-    //         Storage::delete($filePath);
-
-    //         // 他に必要な処理があればここで実行
-
-    //         return redirect()->with('success', '画像が削除されました。');
-    //     }
-
-    //     return redirect()->with('error', '指定された画像は存在しません。');
-    // }
+        $catImages = DB::table('catimages')->get()->toArray();
+        $imageFiles = Storage::files('public/catimages');;
+        return view('create', ['imageFiles' => $imageFiles, 'catImages' => $catImages]);
+    }
 }
