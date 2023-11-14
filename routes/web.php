@@ -31,6 +31,6 @@ Route::middleware('auth')->group(function () {
 
 Route::get('/create', [CatimageController::class, 'create'])->name('create.form');
 Route::post('/upload', [CatimageController::class, 'store'])->name('upload.catimage');
-// Route::delete('/destroy', [ImageController::class, 'destroy'])->name('create.destroy');
+Route::post('/destroy{id}', [CatimageController::class, 'destroy'])->name('create.destroy');
 
 require __DIR__.'/auth.php';
