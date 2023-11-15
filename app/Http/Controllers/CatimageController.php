@@ -12,8 +12,9 @@ class CatimageController extends Controller
     public function create()
     {
         $catImages = DB::table('catimages')->get()->toArray();
-        $imageFiles = Storage::files('public/catimages');;
-        return view('create', ['imageFiles' => $imageFiles, 'catImages' => $catImages]);
+        // $imageFiles = Storage::files('public/catimages');
+        // return view('create', ['imageFiles' => $imageFiles, 'catImages' => $catImages]);
+        return view('create', ['catImages' => $catImages]);
     }
     
     public function store(Request $request)
@@ -36,6 +37,7 @@ class CatimageController extends Controller
         Catimage::create([
             'title' => $request->title,
             'image_path' => $imageName,
+            'text' => $request->text,
         ]);
     
         return redirect()->route('create.form')->with('success', 'Image uploaded successfully');
