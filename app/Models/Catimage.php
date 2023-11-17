@@ -8,5 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class Catimage extends Model
 {
     use HasFactory;
-    protected $fillable = ['title', 'image_path','map_lat','map_lng','text'];
+    protected $fillable = ['title', 'image_path','map_lat','map_lng','text','user_id'];
 }
