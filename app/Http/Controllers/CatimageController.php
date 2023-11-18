@@ -6,6 +6,7 @@ use DB;
 use App\Models\Catimage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
 
 class CatimageController extends Controller
 {
@@ -25,6 +26,8 @@ class CatimageController extends Controller
         ]);
     
         $imageName = time().'.'.$request->image->extension();
+        $id = auth()->id();
+        // 'user' => $request->user(),
 
         // storageへ保存先変更　ここから
         if (!file_exists($catimages_dir = storage_path('app/public/catimages'))) {
@@ -38,6 +41,7 @@ class CatimageController extends Controller
             'title' => $request->title,
             'image_path' => $imageName,
             'text' => $request->text,
+            'user_id' => $id,
         ]);
     
         return redirect()->route('create.form')->with('success', 'Image uploaded successfully');
@@ -55,7 +59,6 @@ class CatimageController extends Controller
         // }
 
         $catImages = DB::table('catimages')->get()->toArray();
-        $imageFiles = Storage::files('public/catimages');;
-        return view('create', ['imageFiles' => $imageFiles, 'catImages' => $catImages]);
+        return view('create', ['catImages' => $catImages]);
     }
 }

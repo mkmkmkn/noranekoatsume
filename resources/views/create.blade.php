@@ -1,5 +1,14 @@
 <!-- resources/views/create.blade.php -->
+@extends('layouts.app')
 
+
+@php
+// $id = auth()->id();
+$id = Auth::user()->id;
+@endphp
+
+@section('content')<!-- コンテンツ -->
+<section class="create_section text-gray-800 dark:text-gray-200">
 <form action="{{ route('upload.catimage') }}" method="POST" enctype="multipart/form-data">
     @csrf
     <label for="title">Title:</label>
@@ -21,9 +30,14 @@
     <img src="{{ asset('storage/catimages/' . $catImage->image_path) }}" alt="Cat Image" style='height:100px'>
     <p>{!! nl2br(e($catImage->text)) !!}</p>
 
-    <form method="post" action="{{ route('create.destroy', ['id'=>$catImage->id]) }}">
-        @csrf
-        <button type="submit">削除</button>
-    </form>
+    @if ($catImage->user_id === $id)
+        <form method="post" action="{{ route('create.destroy', ['id'=>$catImage->id]) }}">
+            @csrf
+            <button type="submit">削除</button>
+        </form>
+    @endif
+
 @endforeach
 @endif
+</section>
+@endsection
