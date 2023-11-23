@@ -7,6 +7,7 @@ use App\Models\Catimage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Nice;
 
 class CatimageController extends Controller
 {
@@ -15,7 +16,12 @@ class CatimageController extends Controller
         $catImages = DB::table('catimages')->get()->toArray();
         // $imageFiles = Storage::files('public/catimages');
         // return view('create', ['imageFiles' => $imageFiles, 'catImages' => $catImages]);
-        return view('create', ['catImages' => $catImages]);
+
+        // return view('create', ['catImages' => $catImages]);
+        
+        // $nice=Nice::where('catimage_id', $post->id)->where('user_id', auth()->user()->id)->first();
+        $nice=Nice::get();
+        return view('create', compact('catImages', 'nice'));
     }
     
     public function store(Request $request)

@@ -34,7 +34,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/create', [CatimageController::class, 'create'])->name('create.form');
     Route::post('/upload', [CatimageController::class, 'store'])->name('upload.catimage');
     Route::post('/destroy{id}', [CatimageController::class, 'destroy'])->name('create.destroy');
-
+    
+    Route::get('/create/nice/{post}', [NiceController::class, 'nice'])->name('nice');
+    Route::get('/create/unnice/{post}', [NiceController::class, 'unnice'])->name('unnice');
 });
 
 require __DIR__.'/auth.php';

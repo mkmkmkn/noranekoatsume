@@ -37,7 +37,48 @@ $id = Auth::user()->id;
         </form>
     @endif
 
+@php
+    $catid = $catImage->id;
+    var_dump('<pre>');
+    var_dump($nice);
+    var_dump('</pre>');
+
+    $nicenum=$nice->('catimage_id', $catid)->count();
+@endphp
+			{{-- {{ $nice }} --}}
+    
+{{-- <span>
+<img src="{{asset('img/nicebutton.png')}}" width="30px">
+<!-- もし$niceがあれば＝ユーザーが「いいね」をしていたら -->
+@if($nice)
+<!-- 「いいね」取消用ボタンを表示 -->
+	<a href="{{ route('unnice', $post) }}" class="btn btn-success btn-sm">
+		いいね
+		<!-- 「いいね」の数を表示 -->
+		<span class="badge">
+			{{ $post->nices->count() }}
+		</span>
+	</a>
+@else
+<!-- まだユーザーが「いいね」をしていなければ、「いいね」ボタンを表示 -->
+	<a href="{{ route('nice', $post) }}" class="btn btn-secondary btn-sm">
+		いいね
+		<!-- 「いいね」の数を表示 -->
+		<span class="badge">
+			{{ $post->nices->count() }}
+		</span>
+	</a>
+@endif
+</span> --}}
+
+
 @endforeach
 @endif
+
+
+
+
+
+
 </section>
 @endsection
