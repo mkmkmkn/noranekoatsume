@@ -42,4 +42,12 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function catimages() {
+        return $this->hasMany('App\Models\Catimage');
+    }
+
+    public function nices() {
+        return $this->hasMany('App\Models\Nice');
+    }
 }
