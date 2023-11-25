@@ -31,12 +31,15 @@ Route::middleware('auth')->group(function () {
     // Route::get('/', function () {
     //     return view('welcome');
     // });
-    Route::get('/create', [CatimageController::class, 'create'])->name('create.form');
+    Route::get('/create', [App\Http\Controllers\CatimageController::class, 'create'])->name('create.form');
     Route::post('/upload', [CatimageController::class, 'store'])->name('upload.catimage');
     Route::post('/destroy{id}', [CatimageController::class, 'destroy'])->name('create.destroy');
     
-    Route::get('/create/nice/{post}', [NiceController::class, 'nice'])->name('nice');
-    Route::get('/create/unnice/{post}', [NiceController::class, 'unnice'])->name('unnice');
+    // Route::get('/create/nice/{post}', [NiceController::class, 'nice'])->name('nice');
+    // Route::get('/create/unnice/{post}', [NiceController::class, 'unnice'])->name('unnice');
 });
+
+    Route::get('/create/nice/{post}', [CatimageController::class, 'nice'])->name('nice');
+    Route::get('/create/unnice/{post}', [CatimageController::class, 'unnice'])->name('unnice');
 
 require __DIR__.'/auth.php';

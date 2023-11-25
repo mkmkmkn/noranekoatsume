@@ -11,16 +11,34 @@ use App\Models\Nice;
 
 class CatimageController extends Controller
 {
+    public function nice($post, Request $request){
+        $nice=New Nice();
+        $nice->catimage_id=$post;
+        $nice->user_id=Auth::user()->id;
+        $nice->save();
+        return back();
+    }
+    public function unnice($post, Request $request){
+        $user=Auth::user()->id;
+        $nice=Nice::where('catimage_id', $post)->where('user_id', $user)->first();
+        $nice->delete();
+        return back();
+    }
     public function create()
     {
-        $catImages = DB::table('catimages')->get()->toArray();
+        // $catImages = DB::table('catimages')->get()->toArray();
+        $catImages = Catimage::with('nices')->paginate(2);
+
+
+
         // $imageFiles = Storage::files('public/catimages');
         // return view('create', ['imageFiles' => $imageFiles, 'catImages' => $catImages]);
 
         // return view('create', ['catImages' => $catImages]);
         
         // $nice=Nice::where('catimage_id', $post->id)->where('user_id', auth()->user()->id)->first();
-        $nice=Nice::get();
+        // $nice=Nice::get();
+        $nice=Nice::where('user_id', auth()->user()->id)->get();
         return view('create', compact('catImages', 'nice'));
     }
     

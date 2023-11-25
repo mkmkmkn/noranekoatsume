@@ -13,7 +13,7 @@ class Catimage extends Model
     public function user() {
         return $this->belongsTo('App\Models\User');
     }
- 
+
     public function nices() {
         return $this->hasMany('App\Models\Nice');
     }
