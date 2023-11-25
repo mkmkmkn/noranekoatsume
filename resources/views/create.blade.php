@@ -12,13 +12,16 @@ $id = Auth::user()->id;
 <form action="{{ route('upload.catimage') }}" method="POST" enctype="multipart/form-data">
     @csrf
     <label for="title">Title:</label>
-    <input type="text" name="title" required>
+    <input class="text-black-200" type="text" name="title" required>
     <label for="image">Image:</label>
     <input type="file" name="image" accept="image/*" required>
     <textarea class="form-control" rows="6" name="text"></textarea>
     <button type="submit">Upload Image</button>
 </form>
 
+@if(session('success'))
+{{ session('success') }}
+    @endif
 {{-- @foreach ($imageFiles as $image)
     <img src="{{ asset(str_replace('public', 'storage', $image)) }}" alt="Cat Image" style='height:20px'>
 @endforeach --}}
@@ -37,16 +40,38 @@ $id = Auth::user()->id;
         </form>
     @endif
 
+    
+@php
+    // $catid = $catImage->id;
+// $hantei = $nice->hanteisuru($id);
+    
+@endphp
+
+
+    
+@if($catImage->nices)
+	<a href="{{ route('nice', $catImage->id) }}" class="btn btn-secondary btn-sm">
+		いいね
+		<!-- 「いいね」の数を表示 -->
+		<span class="badge">
+			{{ $catImage->nices->count() }}
+		</span>
+	</a>
+@else
+	<a href="{{ route('unnice', $catImage->id) }}" class="btn btn-success btn-sm">
+		いいね削除
+		<!-- 「いいね」の数を表示 -->
+		<span class="badge">
+			{{ $catImage->nices->count() }}
+		</span>
+	</a>
+@endif
+    <br>
+
 @php
     $catid = $catImage->id;
-    var_dump('<pre>');
-    var_dump($nice);
-    var_dump('</pre>');
-
-    $nicenum=$nice->('catimage_id', $catid)->count();
 @endphp
 			{{-- {{ $nice }} --}}
-    
 {{-- <span>
 <img src="{{asset('img/nicebutton.png')}}" width="30px">
 <!-- もし$niceがあれば＝ユーザーが「いいね」をしていたら -->
@@ -76,7 +101,20 @@ $id = Auth::user()->id;
 @endif
 
 
+    <br>
+    <br>
 
+@php
+    var_dump('<pre>');
+    var_dump($catImages);
+    var_dump('</pre>');
+
+    // var_dump('<pre>');
+    // var_dump($nice);
+    // var_dump('</pre>');
+
+    // $nicenum=$nice->('catimage_id', $catid)->count();
+@endphp
 
 
 
