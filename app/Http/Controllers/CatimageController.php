@@ -27,8 +27,22 @@ class CatimageController extends Controller
     public function create()
     {
         // $catImages = DB::table('catimages')->get()->toArray();
-        $catImages = Catimage::with('nices')->paginate(2);
+        // $catImages = Catimage::with('nices')->paginate(5);
+        $catImages = Catimage::with('nices')->get()->toArray();
 
+        $unco = Catimage::with('nices')->get();
+
+        $nices = array();
+        foreach ($unco as $catImage) {
+            $imageNiceShow = Nice::where('catimage_id', $catImage->id)->where('user_id', auth()->user()->id)->first();
+
+            if ($imageNiceShow) {
+                $nices[] = true;
+            } else {
+                $nices[] = false;
+            }
+        }
+        // $showPostId = array;
 
 
         // $imageFiles = Storage::files('public/catimages');
@@ -38,8 +52,8 @@ class CatimageController extends Controller
         
         // $nice=Nice::where('catimage_id', $post->id)->where('user_id', auth()->user()->id)->first();
         // $nice=Nice::get();
-        $nice=Nice::where('user_id', auth()->user()->id)->get();
-        return view('create', compact('catImages', 'nice'));
+        // $nice=Nice::where('user_id', auth()->user()->id)->get();
+        return view('create', compact('catImages', 'nices'));
     }
     
     public function store(Request $request)

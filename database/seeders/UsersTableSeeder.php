@@ -19,10 +19,12 @@ class UsersTableSeeder extends Seeder
         //     'password' => Hash::make('testuser')
         // ]);
 
-        User::create([
-            'name' => 'testuser',
-            'email' => 'testuser@testuser.com',
-            'password' => 'testuser'
-        ]);
+        for ($i=0; $i < 10; $i++) {
+            User::create([
+                'name' => 'testuser'.$i,
+                'email' => 'testuser'.$i.'@testuser.com',
+                'password' => 'testuser'
+            ]);
+        }
     }
 }
