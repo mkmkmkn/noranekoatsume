@@ -12,10 +12,10 @@ $id = Auth::user()->id;
 <form action="{{ route('upload.catimage') }}" method="POST" enctype="multipart/form-data">
     @csrf
     <label for="title">Title:</label>
-    <input class="text-black-200" type="text" name="title" required>
+    <input class="text-gray-900" type="text" name="title" required>
     <label for="image">Image:</label>
     <input type="file" name="image" accept="image/*" required>
-    <textarea class="form-control" rows="6" name="text"></textarea>
+    <textarea class="form-control text-gray-900" rows="6" name="text"></textarea>
     <button type="submit">Upload Image</button>
 </form>
 
@@ -63,6 +63,98 @@ $id = Auth::user()->id;
 
 <br>
 <br>
+<br>
+<br>
+<br>
+
+<style>
+#map {
+    width: 600px;
+    height: 600px;
+}
+</style>
+    <div id="map"></div>
+<script>
+let map;
+
+async function initMap() {
+  //@ts-ignore
+  const { Map } = await google.maps.importLibrary("maps");
+
+  map = new Map(document.getElementById("map"), {
+    center: { lat: -34.397, lng: 150.644 },
+    zoom: 8,
+  });
+}
+
+initMap();
+</script>
+{{-- <div class="" onload="javascript:init();">
+<p>Google Maps Point Marker</p>
+
+<div id="map" style="margin-top: 10px; margin-bottom:15px;"></div>
+
+緯度：<input type="text" id="lat" name="lat" value="" size="20">　経度：<input type="text" id="lng" name="lng" value="" size="20">
+
+</div>
+
+<!-- Google Maps API -->
+<script src="https://maps.googleapis.com/maps/api/js"></script>
+<script>
+var marker = null;
+var lat = 35.729493379635535;
+var lng = 139.71086479574538;
+ 
+function init() {
+  //初期化
+  var map = new google.maps.Map(document.getElementById('map'), {
+    zoom: 18, center: {lat: lat, lng: lng}
+  });
+ 
+  document.getElementById('lat').value = lat;
+  document.getElementById('lng').value = lng;
+ 
+  //初期マーカー
+  marker = new google.maps.Marker({
+    map: map, position: new google.maps.LatLng(lat, lng),
+  });
+ 
+  //クリックイベント
+  map.addListener('click', function(e) {
+    clickMap(e.latLng, map);
+  });
+}
+ 
+function clickMap(geo, map) {
+  lat = geo.lat();
+  lng = geo.lng();
+ 
+  //小数点以下6桁に丸める場合
+  //lat = Math.floor(lat * 1000000) / 1000000);
+  //lng = Math.floor(lng * 1000000) / 1000000);
+ 
+  document.getElementById('lat').value = lat;
+  document.getElementById('lng').value = lng;
+ 
+  //中心にスクロール
+  map.panTo(geo);
+ 
+  //マーカーの更新
+  marker.setMap(null);
+  marker = null;
+  marker = new google.maps.Marker({
+    map: map, position: geo 
+  });
+  
+}
+</script> --}}
+ 
+
+<br>
+<br>
+<br>
+<br>
+<br>
 
 @php
     // var_dump('<pre>');
@@ -70,7 +162,7 @@ $id = Auth::user()->id;
     // var_dump('</pre>');
 
     var_dump('<pre>');
-    var_dump($nice);
+    var_dump($nices);
     var_dump('</pre>');
 
 @endphp
