@@ -74,11 +74,12 @@ $id = Auth::user()->id;
 }
 </style>
     <div id="map"></div>
+
+    <script async src="{{ config('services.google-map.apikey') }}"></script>
 <script>
 let map;
 
 async function initMap() {
-  //@ts-ignore
   const { Map } = await google.maps.importLibrary("maps");
 
   map = new Map(document.getElementById("map"), {
