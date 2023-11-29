@@ -16,12 +16,15 @@ $id = Auth::user()->id;
     <label for="image">Image:</label>
     <input type="file" name="image" accept="image/*" required>
     <textarea class="form-control text-gray-900" rows="6" name="text"></textarea>
+    <div id="map"></div>
+    lat(緯度):<input class="text-gray-900" type="text" name="map_lat" id="lat" required>
+    lng(経度):<input class="text-gray-900" type="text" name="map_lng" id="lng" required>
     <button type="submit">Upload Image</button>
 </form>
 
-@if(session('success'))
-{{ session('success') }}
-    @endif
+@if (session('success'))
+  {{ session('success') }}
+@endif
 {{-- @foreach ($imageFiles as $image)
     <img src="{{ asset(str_replace('public', 'storage', $image)) }}" alt="Cat Image" style='height:20px'>
 @endforeach --}}
@@ -61,11 +64,15 @@ $id = Auth::user()->id;
 @endforeach
 @endif
 
-<br>
-<br>
-<br>
-<br>
-<br>
+@php
+    // var_dump('<pre>');
+    // var_dump($catImages);
+    // var_dump('</pre>');
+
+    // var_dump('<pre>');
+    // var_dump($nices);
+    // var_dump('</pre>');
+@endphp
 
 <style>
 #map {
@@ -73,9 +80,7 @@ $id = Auth::user()->id;
     height: 600px;
 }
 </style>
-    <div id="map"></div>
 
-    <script async src="{{ config('services.google-map.apikey') }}"></script>
 <script>
 let map;
 
@@ -83,92 +88,36 @@ async function initMap() {
   const { Map } = await google.maps.importLibrary("maps");
 
   map = new Map(document.getElementById("map"), {
-    center: { lat: -34.397, lng: 150.644 },
-    zoom: 8,
+    center: { lat: 7.292960033301938, lng: 80.63932507647996 },
+    zoom: 16,
   });
+
+  // クリックイベントを追加
+  map.addListener('click', function(e) {
+    getClickLatLng(e.latLng, map);
+  });
+}
+
+function getClickLatLng(lat_lng, map) {
+
+  // 座標を表示
+  document.getElementById('lat').value = lat_lng.lat();
+  document.getElementById('lng').value = lat_lng.lng();
+
+  // マーカーを設置
+  var marker = new google.maps.Marker({
+    position: lat_lng,
+    map: map
+  });
+
+  // 座標の中心をずらす
+  // http://syncer.jp/google-maps-javascript-api-matome/map/method/panTo/
+  map.panTo(lat_lng);
 }
 
 initMap();
 </script>
-{{-- <div class="" onload="javascript:init();">
-<p>Google Maps Point Marker</p>
-
-<div id="map" style="margin-top: 10px; margin-bottom:15px;"></div>
-
-緯度：<input type="text" id="lat" name="lat" value="" size="20">　経度：<input type="text" id="lng" name="lng" value="" size="20">
-
-</div>
-
-<!-- Google Maps API -->
-<script src="https://maps.googleapis.com/maps/api/js"></script>
-<script>
-var marker = null;
-var lat = 35.729493379635535;
-var lng = 139.71086479574538;
- 
-function init() {
-  //初期化
-  var map = new google.maps.Map(document.getElementById('map'), {
-    zoom: 18, center: {lat: lat, lng: lng}
-  });
- 
-  document.getElementById('lat').value = lat;
-  document.getElementById('lng').value = lng;
- 
-  //初期マーカー
-  marker = new google.maps.Marker({
-    map: map, position: new google.maps.LatLng(lat, lng),
-  });
- 
-  //クリックイベント
-  map.addListener('click', function(e) {
-    clickMap(e.latLng, map);
-  });
-}
- 
-function clickMap(geo, map) {
-  lat = geo.lat();
-  lng = geo.lng();
- 
-  //小数点以下6桁に丸める場合
-  //lat = Math.floor(lat * 1000000) / 1000000);
-  //lng = Math.floor(lng * 1000000) / 1000000);
- 
-  document.getElementById('lat').value = lat;
-  document.getElementById('lng').value = lng;
- 
-  //中心にスクロール
-  map.panTo(geo);
- 
-  //マーカーの更新
-  marker.setMap(null);
-  marker = null;
-  marker = new google.maps.Marker({
-    map: map, position: geo 
-  });
-  
-}
-</script> --}}
- 
-
-<br>
-<br>
-<br>
-<br>
-<br>
-
-@php
-    // var_dump('<pre>');
-    // var_dump($catImages);
-    // var_dump('</pre>');
-
-    var_dump('<pre>');
-    var_dump($nices);
-    var_dump('</pre>');
-
-@endphp
-
-
+<script async src="{{ config('services.google-map.apikey') }}"></script>
 
 </section>
 @endsection
