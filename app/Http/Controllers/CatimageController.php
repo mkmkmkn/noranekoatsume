@@ -80,6 +80,8 @@ class CatimageController extends Controller
             'image_path' => $imageName,
             'text' => $request->text,
             'user_id' => $id,
+            'map_lat' => $request->map_lat,
+            'map_lng' => $request->map_lng,
         ]);
     
         return redirect()->route('create.form')->with('success', 'Image uploaded successfully');
