@@ -16,7 +16,7 @@ $id = Auth::user()->id;
     <label for="image">Image:</label>
     <input type="file" name="image" accept="image/*" required>
     <textarea class="form-control text-gray-900" rows="6" name="text"></textarea>
-    <div id="map"></div>
+    <div id="formMap"></div>
     lat(緯度):<input class="text-gray-900" type="text" name="map_lat" id="lat" required>
     lng(経度):<input class="text-gray-900" type="text" name="map_lng" id="lng" required>
     <button type="submit">Upload Image</button>
@@ -64,6 +64,8 @@ $id = Auth::user()->id;
 @endforeach
 @endif
 
+<div id="map"></div>
+    
 @php
     // var_dump('<pre>');
     // var_dump($catImages);
@@ -79,40 +81,60 @@ $id = Auth::user()->id;
     width: 600px;
     height: 600px;
 }
+#formMap {
+    width: 600px;
+    height: 600px;
+}
 </style>
 
 <script>
-let map;
+var catImages = @json($catImages);
 
 async function initMap() {
-  const { Map } = await google.maps.importLibrary("maps");
+    const { Map } = await google.maps.importLibrary("maps");
+    const japan = { lat: 35.000000, lng: 135.300000 };
 
-  map = new Map(document.getElementById("map"), {
-    center: { lat: 7.292960033301938, lng: 80.63932507647996 },
-    zoom: 16,
-  });
+    map = new Map(document.getElementById("map"), {
+    zoom: 4.8,
+        center: japan,
+    });
+    formMap = new Map(document.getElementById("formMap"), {
+        center: japan,
+        zoom: 4.8,
+    });
 
-  // クリックイベントを追加
-  map.addListener('click', function(e) {
-    getClickLatLng(e.latLng, map);
-  });
+    // 画像の位置情報をマップに配置
+    catImages.forEach(e => {
+        markerLatLng = {lat: Number(e['map_lat']), lng: Number(e['map_lng'])};
+        console.log(markerLatLng);
+        var marker = new google.maps.Marker({
+            position: markerLatLng,
+            map: map,
+            title: e['title']
+        });
+    });
+
+    // クリックイベントを追加
+    formMap.addListener('click', function(e) {
+        getClickLatLng(e.latLng, formMap);
+    });
 }
 
-function getClickLatLng(lat_lng, map) {
+// フォーム用マップ　位置情報取得用
+function getClickLatLng(lat_lng, formMap) {
+    // 座標を表示
+    document.getElementById('lat').value = lat_lng.lat();
+    document.getElementById('lng').value = lat_lng.lng();
 
-  // 座標を表示
-  document.getElementById('lat').value = lat_lng.lat();
-  document.getElementById('lng').value = lat_lng.lng();
+    // マーカーを設置
+    var marker = new google.maps.Marker({
+        position: lat_lng,
+        map: formMap
+    });
 
-  // マーカーを設置
-  var marker = new google.maps.Marker({
-    position: lat_lng,
-    map: map
-  });
-
-  // 座標の中心をずらす
-  // http://syncer.jp/google-maps-javascript-api-matome/map/method/panTo/
-  map.panTo(lat_lng);
+    // 座標の中心をずらす
+    // http://syncer.jp/google-maps-javascript-api-matome/map/method/panTo/
+    formMap.panTo(lat_lng);
 }
 
 initMap();
