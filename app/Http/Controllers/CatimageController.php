@@ -11,12 +11,14 @@ use App\Models\Nice;
 
 class CatimageController extends Controller
 {
-    public function nice($post, Request $request){
+    public function nice(Request $request){
         $nice=New Nice();
-        $nice->catimage_id=$post;
+        $nice->catimage_id=$request->id;
         $nice->user_id=Auth::user()->id;
         $nice->save();
-        return back();
+        // return back();
+        $ohenji = "いけました";
+        return response()->json(['userId' => $ohenji]);
     }
     public function unnice($post, Request $request){
         $user=Auth::user()->id;
@@ -30,10 +32,10 @@ class CatimageController extends Controller
         // $catImages = Catimage::with('nices')->paginate(5);
         $catImages = Catimage::with('nices')->get()->toArray();
 
-        $unco = Catimage::with('nices')->get();
+        $niceGet = Catimage::with('nices')->get();
 
         $nices = array();
-        foreach ($unco as $catImage) {
+        foreach ($niceGet as $catImage) {
             $imageNiceShow = Nice::where('catimage_id', $catImage->id)->where('user_id', auth()->user()->id)->first();
 
             if ($imageNiceShow) {
