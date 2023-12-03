@@ -39,7 +39,7 @@ Route::middleware('auth')->group(function () {
     // Route::get('/create/unnice/{post}', [NiceController::class, 'unnice'])->name('unnice');
 });
 
-    Route::get('/create/nice/{post}', [CatimageController::class, 'nice'])->name('nice');
+    Route::post('/create/nice', [CatimageController::class, 'nice'])->name('nice');
     Route::get('/create/unnice/{post}', [CatimageController::class, 'unnice'])->name('unnice');
 
 require __DIR__.'/auth.php';

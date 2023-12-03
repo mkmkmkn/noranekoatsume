@@ -44,7 +44,14 @@ $id = Auth::user()->id;
     @endif
 
     @if(!$nice)
-        <a href="{{ route('nice', $catImage['id']) }}" class="btn btn-secondary btn-sm">
+        {{-- <a href="{{ route('nice', $catImage['id']) }}" class="btn btn-secondary btn-sm">
+            いいね
+            <!-- 「いいね」の数を表示 -->
+            <span class="badge">
+                {{ count($catImage['nices']) }}
+            </span>
+        </a> --}}
+        <a href="" class="js-like-toggle btn btn-secondary btn-sm" data-postid="{{ $catImage['id'] }}">
             いいね
             <!-- 「いいね」の数を表示 -->
             <span class="badge">
@@ -63,6 +70,55 @@ $id = Auth::user()->id;
     <br>
 @endforeach
 @endif
+
+<script>
+$(function () {
+    var like = $('.js-like-toggle');
+    var likePostId;
+        // console.log("ああああ");
+
+    like.on('click', function () {
+        // var $this = $(this);
+        likePostId = $(this).data('postid');
+
+        console.log(likePostId);
+        // console.log("いいいい");
+        $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url: "{{ route('nice') }}",  //routeの記述
+                type: 'POST', //受け取り方法の記述（GETもある）
+                data: {
+                    'id': likePostId //コントローラーに渡すパラメーター
+                },
+                dataType: "json",
+                // data: likePostId,
+        })
+
+            // Ajaxリクエストが成功した場合
+            .done(function (data) {
+    //lovedクラスを追加
+                $(this).toggleClass('loved'); 
+                console.log(data.userId);
+
+    //.likesCountの次の要素のhtmlを「data.postLikesCount」の値に書き換える
+                // $this.next('.likesCount').html(data.postLikesCount); 
+
+            })
+            // Ajaxリクエストが失敗した場合
+            .fail(function (data, xhr, err) {
+    //ここの処理はエラーが出た時にエラー内容をわかるようにしておく。
+    //とりあえず下記のように記述しておけばエラー内容が詳しくわかります。笑
+                console.log('エラー');
+                console.log(err);
+                console.log(xhr);
+            });
+        
+        return false;
+    });
+});
+</script>
 
 <div id="map"></div>
     
