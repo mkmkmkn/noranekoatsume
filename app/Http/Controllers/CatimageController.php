@@ -30,9 +30,12 @@ class CatimageController extends Controller
     {
         // $catImages = DB::table('catimages')->get()->toArray();
         // $catImages = Catimage::with('nices')->paginate(5);
-        $catImages = Catimage::with('nices')->get()->toArray();
 
-        $niceGet = Catimage::with('nices')->get();
+        // $catImages = Catimage::with('nices')->get()->toArray();
+        // $niceGet = Catimage::with('nices')->get();
+
+        $catImages = Catimage::with('nices')->paginate(2);
+        $niceGet = Catimage::with('nices')->paginate(2);
 
         $nices = array();
         foreach ($niceGet as $catImage) {
