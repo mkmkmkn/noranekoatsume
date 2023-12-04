@@ -23,14 +23,30 @@ $id = Auth::user()->id;
 </form>
 
 @if (session('success'))
-  {{ session('success') }}
+    {{ session('success') }}
 @endif
 {{-- @foreach ($imageFiles as $image)
     <img src="{{ asset(str_replace('public', 'storage', $image)) }}" alt="Cat Image" style='height:20px'>
 @endforeach --}}
 
-@if ($catImages)
-@foreach (array_map(null, $catImages, $nices) as [$catImage, $nice])
+@php
+$catImagesArray = [];
+foreach($catImages as $item) {
+    $catImagesArray[] = [
+        'id' => $item->id,
+        'title' => $item->title,
+        'image_path' => $item->image_path,
+        'text' => $item->text,
+        'nices' => $item->nices,
+        'user_id' => $item->user_id,
+        'map_lat' => $item->map_lat,
+        'map_lng' => $item->map_lng
+    ];
+};
+@endphp
+
+@if ($catImagesArray)
+@foreach (array_map(null, $catImagesArray, $nices) as [$catImage, $nice])
     <p>{{ $catImage['id'] }}</p>
     <p>{{ $catImage['title'] }}</p>
     <img src="{{ asset('storage/catimages/' . $catImage['image_path']) }}" alt="Cat Image" style='height:100px'>
@@ -70,12 +86,12 @@ $id = Auth::user()->id;
     <br>
 @endforeach
 @endif
+    {{ $catImages->links() }}
 
 <script>
 $(function () {
     var like = $('.js-like-toggle');
     var likePostId;
-        // console.log("ああああ");
 
     like.on('click', function () {
         // var $this = $(this);
@@ -87,18 +103,16 @@ $(function () {
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
-                url: "{{ route('nice') }}",  //routeの記述
-                type: 'POST', //受け取り方法の記述（GETもある）
+                url: "{{ route('nice') }}",
+                type: 'POST',
                 data: {
-                    'id': likePostId //コントローラーに渡すパラメーター
+                    'id': likePostId
                 },
                 dataType: "json",
-                // data: likePostId,
         })
 
             // Ajaxリクエストが成功した場合
             .done(function (data) {
-    //lovedクラスを追加
                 $(this).toggleClass('loved'); 
                 console.log(data.userId);
 
@@ -144,7 +158,7 @@ $(function () {
 </style>
 
 <script>
-var catImages = @json($catImages);
+var catImages = @json($catImagesArray);
 
 async function initMap() {
     const { Map } = await google.maps.importLibrary("maps");
