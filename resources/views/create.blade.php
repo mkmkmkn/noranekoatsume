@@ -60,23 +60,16 @@ foreach($catImages as $item) {
     @endif
 
     @if(!$nice)
-        {{-- <a href="{{ route('nice', $catImage['id']) }}" class="btn btn-secondary btn-sm">
-            いいね
-            <!-- 「いいね」の数を表示 -->
-            <span class="badge">
-                {{ count($catImage['nices']) }}
-            </span>
-        </a> --}}
         <a href="" class="js-like-toggle btn btn-secondary btn-sm" data-postid="{{ $catImage['id'] }}">
-            いいね
+            <span class="niceText">いいね</span>
             <!-- 「いいね」の数を表示 -->
             <span class="badge">
                 {{ count($catImage['nices']) }}
             </span>
         </a>
     @else
-        <a href="{{ route('unnice', $catImage['id']) }}" class="btn btn-success btn-sm">
-            いいね削除
+        <a href="" class="js-like-toggle btn btn-secondary btn-sm" data-postid="{{ $catImage['id'] }}">
+            <span class="niceText">いいね削除</span>
             <!-- 「いいね」の数を表示 -->
             <span class="badge">
                 {{ count($catImage['nices']) }}
@@ -94,40 +87,41 @@ $(function () {
     var likePostId;
 
     like.on('click', function () {
-        // var $this = $(this);
         likePostId = $(this).data('postid');
+        thisNice = $(this);
 
         console.log(likePostId);
-        // console.log("いいいい");
         $.ajax({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                url: "{{ route('nice') }}",
-                type: 'POST',
-                data: {
-                    'id': likePostId
-                },
-                dataType: "json",
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            url: "{{ route('nice') }}",
+            type: 'POST',
+            data: {
+                'id': likePostId
+            },
+            dataType: "json",
         })
+        .done(function (data) {
+            // thisNice.toggleClass('loved'); 
+            console.log(data.message);
 
-            // Ajaxリクエストが成功した場合
-            .done(function (data) {
-                $(this).toggleClass('loved'); 
-                console.log(data.userId);
+            if(data.niced) {
+                thisNice.children('.niceText').text('いいね削除');
+            } else {
+                thisNice.children('.niceText').text('いいね');
+            }
+            thisNice.children('.badge').text(data.countNices);
+            //.likesCountの次の要素のhtmlを「data.postLikesCount」の値に書き換える
+            // $this.next('.likesCount').html(data.postLikesCount); 
 
-    //.likesCountの次の要素のhtmlを「data.postLikesCount」の値に書き換える
-                // $this.next('.likesCount').html(data.postLikesCount); 
-
-            })
-            // Ajaxリクエストが失敗した場合
-            .fail(function (data, xhr, err) {
-    //ここの処理はエラーが出た時にエラー内容をわかるようにしておく。
-    //とりあえず下記のように記述しておけばエラー内容が詳しくわかります。笑
-                console.log('エラー');
-                console.log(err);
-                console.log(xhr);
-            });
+        })
+        // Ajaxリクエストが失敗した場合
+        .fail(function (data, xhr, err) {
+            console.log('エラー');
+            console.log(err);
+            console.log(xhr);
+        });
         
         return false;
     });
@@ -154,6 +148,9 @@ $(function () {
 #formMap {
     width: 600px;
     height: 600px;
+}
+.loved {
+    background-color: white;
 }
 </style>
 

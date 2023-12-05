@@ -12,13 +12,29 @@ use App\Models\Nice;
 class CatimageController extends Controller
 {
     public function nice(Request $request){
-        $nice=New Nice();
-        $nice->catimage_id=$request->id;
-        $nice->user_id=Auth::user()->id;
-        $nice->save();
-        // return back();
-        $ohenji = "いけました";
-        return response()->json(['userId' => $ohenji]);
+        $user=Auth::user()->id;
+        $nice=Nice::where('catimage_id', $request->id)->where('user_id', $user)->first();
+
+        if (!$nice) {
+            $nice=New Nice();
+            $nice->catimage_id=$request->id;
+            $nice->user_id=Auth::user()->id;
+            $nice->save();
+            $ohenji = "いいねしました";
+            $niced = 1;
+        } else {
+            $nice->delete();
+            $ohenji = "いいね削除しました";
+            $niced = 0;
+        }
+
+        $countNices = Nice::where('catimage_id', $request->id)->count();
+
+        return response()->json([
+            'message' => $ohenji,
+            'niced' => $niced,
+            'countNices' => $countNices,
+        ]);
     }
     public function unnice($post, Request $request){
         $user=Auth::user()->id;
