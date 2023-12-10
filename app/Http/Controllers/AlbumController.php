@@ -8,9 +8,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Nice;
-use App\Models\Comment;
 
-class CatimageController extends Controller
+class AlbumController extends Controller
 {
     public function nice(Request $request){
         $user=Auth::user()->id;
@@ -37,14 +36,12 @@ class CatimageController extends Controller
             'countNices' => $countNices,
         ]);
     }
-
     public function unnice($post, Request $request){
         $user=Auth::user()->id;
         $nice=Nice::where('catimage_id', $post)->where('user_id', $user)->first();
         $nice->delete();
         return back();
     }
-
     public function create()
     {
         // $catImages = DB::table('catimages')->get()->toArray();
@@ -53,7 +50,7 @@ class CatimageController extends Controller
         // $catImages = Catimage::with('nices')->get()->toArray();
         // $niceGet = Catimage::with('nices')->get();
 
-        $catImages = Catimage::with('nices','comments')->paginate(2);
+        $catImages = Catimage::with('nices')->paginate(2);
         $niceGet = Catimage::with('nices')->paginate(2);
 
         $nices = array();
@@ -108,15 +105,13 @@ class CatimageController extends Controller
             'map_lng' => $request->map_lng,
         ]);
     
-        return redirect()->route('create.form')->with('message', '画像を投稿しました。');
+        return redirect()->route('create.form')->with('success', 'Image uploaded successfully');
     }
     
     public function destroy($id)
     {
         $catimage = Catimage::find($id);
         $imageName = $catimage->image_path;
-        $nice = Nice::where('catimage_id', $id)->delete();
-        $comment = Comment::where('catimage_id', $id)->delete();
 
         // ファイルが存在するか確認
         // if (Storage::exists($imageName)) {
@@ -125,6 +120,6 @@ class CatimageController extends Controller
         // }
 
         $catImages = DB::table('catimages')->get()->toArray();
-        return redirect()->route('create.form')->with('message','投稿を削除しました');
+        return view('create', ['catImages' => $catImages]);
     }
 }

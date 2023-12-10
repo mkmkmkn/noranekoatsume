@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CatimageController;
+use App\Http\Controllers\CommentController;
+use App\Http\Controllers\AlbumController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -37,9 +39,16 @@ Route::middleware('auth')->group(function () {
     
     // Route::get('/create/nice/{post}', [NiceController::class, 'nice'])->name('nice');
     // Route::get('/create/unnice/{post}', [NiceController::class, 'unnice'])->name('unnice');
+
+    // Route::get('/album', [AlbumController::class, 'create'])->name('create');
+    // Route::post('/upload', [AlbumController::class, 'store'])->name('upload.catimage');
+    // Route::post('/destroy{id}', [AlbumController::class, 'destroy'])->name('create.destroy');
 });
 
     Route::post('/create/nice', [CatimageController::class, 'nice'])->name('nice');
     Route::get('/create/unnice/{post}', [CatimageController::class, 'unnice'])->name('unnice');
+
+    Route::post('/comment/store', [CommentController::class, 'store'])->name('comment.store');
+    Route::post('/comment/destroy{id}', [CommentController::class, 'destroy'])->name('comment.destroy');
 
 require __DIR__.'/auth.php';

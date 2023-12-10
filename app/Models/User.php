@@ -50,4 +50,8 @@ class User extends Authenticatable
     public function nices() {
         return $this->hasMany('App\Models\Nice');
     }
+    
+    public function comments() {
+        return $this->hasMany('App\Models\Comment');
+    }
 }
