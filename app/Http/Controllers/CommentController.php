@@ -28,6 +28,6 @@ class CommentController extends Controller
         if ($comment) {
             $comment->delete();
         }
-        return redirect()->route('create.form')->with('message','コメントを削除しました');
+        return redirect()->route('create')->with('message','コメントを削除しました');
     }
 }

@@ -12,40 +12,7 @@ use App\Models\Comment;
 
 class CatimageController extends Controller
 {
-    public function nice(Request $request){
-        $user=Auth::user()->id;
-        $nice=Nice::where('catimage_id', $request->id)->where('user_id', $user)->first();
-
-        if (!$nice) {
-            $nice=New Nice();
-            $nice->catimage_id=$request->id;
-            $nice->user_id=Auth::user()->id;
-            $nice->save();
-            $ohenji = "いいねしました";
-            $niced = 1;
-        } else {
-            $nice->delete();
-            $ohenji = "いいね削除しました";
-            $niced = 0;
-        }
-
-        $countNices = Nice::where('catimage_id', $request->id)->count();
-
-        return response()->json([
-            'message' => $ohenji,
-            'niced' => $niced,
-            'countNices' => $countNices,
-        ]);
-    }
-
-    public function unnice($post, Request $request){
-        $user=Auth::user()->id;
-        $nice=Nice::where('catimage_id', $post)->where('user_id', $user)->first();
-        $nice->delete();
-        return back();
-    }
-
-    public function create()
+    public function index()
     {
         // $catImages = DB::table('catimages')->get()->toArray();
         // $catImages = Catimage::with('nices')->paginate(5);
@@ -77,7 +44,7 @@ class CatimageController extends Controller
         // $nice=Nice::where('catimage_id', $post->id)->where('user_id', auth()->user()->id)->first();
         // $nice=Nice::get();
         // $nice=Nice::where('user_id', auth()->user()->id)->get();
-        return view('create', compact('catImages', 'nices'));
+        return view('dashboard', compact('catImages', 'nices'));
     }
     
     public function store(Request $request)
@@ -108,7 +75,7 @@ class CatimageController extends Controller
             'map_lng' => $request->map_lng,
         ]);
     
-        return redirect()->route('create.form')->with('message', '画像を投稿しました。');
+        return redirect()->route('create')->with('message', '画像を投稿しました。');
     }
     
     public function destroy($id)
@@ -125,6 +92,6 @@ class CatimageController extends Controller
         // }
 
         $catImages = DB::table('catimages')->get()->toArray();
-        return redirect()->route('create.form')->with('message','投稿を削除しました');
+        return redirect()->route('create')->with('message','投稿を削除しました');
     }
 }
