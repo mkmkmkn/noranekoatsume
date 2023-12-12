@@ -44,7 +44,7 @@ class AlbumController extends Controller
         // $nice=Nice::where('catimage_id', $post->id)->where('user_id', auth()->user()->id)->first();
         // $nice=Nice::get();
         // $nice=Nice::where('user_id', auth()->user()->id)->get();
-        return view('dashboard', compact('catImages', 'nices'));
+        return view('album', compact('catImages', 'nices'));
     }
     
     public function store(Request $request)
@@ -75,7 +75,7 @@ class AlbumController extends Controller
             'map_lng' => $request->map_lng,
         ]);
     
-        return redirect()->route('create')->with('message', '画像を投稿しました。');
+        return redirect()->route('album')->with('message', '画像を投稿しました。');
     }
     
     public function destroy($id)
@@ -92,6 +92,6 @@ class AlbumController extends Controller
         // }
 
         $catImages = DB::table('catimages')->get()->toArray();
-        return redirect()->route('create')->with('message','投稿を削除しました');
+        return redirect()->route('album')->with('message','投稿を削除しました');
     }
 }

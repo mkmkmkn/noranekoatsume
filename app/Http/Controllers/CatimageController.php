@@ -75,7 +75,7 @@ class CatimageController extends Controller
             'map_lng' => $request->map_lng,
         ]);
     
-        return redirect()->route('create')->with('message', '画像を投稿しました。');
+        return redirect()->route('dashboard')->with('message', '画像を投稿しました。');
     }
     
     public function destroy($id)
@@ -92,6 +92,6 @@ class CatimageController extends Controller
         // }
 
         $catImages = DB::table('catimages')->get()->toArray();
-        return redirect()->route('create')->with('message','投稿を削除しました');
+        return redirect()->route('dashboard')->with('message','投稿を削除しました');
     }
 }
