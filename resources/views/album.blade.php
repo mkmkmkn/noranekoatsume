@@ -1,32 +1,30 @@
-<!-- resources/views/create.blade.php -->
+<!-- resources/views/album.blade.php -->
 @extends('layouts.app')
 
 @php
-// $id = auth()->id();
-$id = Auth::user()->id;
+    $id = Auth::user()->id;
 @endphp
 
 @section('content')<!-- コンテンツ -->
+
+@if (session('message'))
+    <p class="text-gray-800 dark:text-gray-200">{{ session('message') }}</p>
+@endif
+
+{{-- 画像投稿フォーム --}}
 <section class="create_section text-gray-800 dark:text-gray-200">
-<form action="{{ route('upload.catimage') }}" method="POST" enctype="multipart/form-data">
+<form action="{{ route('catimage.store') }}" method="POST" enctype="multipart/form-data">
     @csrf
     <label for="title">Title:</label>
-    <input class="text-gray-900" type="text" name="title" required>
+    <input class="text-gray-900" type="text" name="title" value="{{old('title')}}" placeholder="画像タイトル" required>
     <label for="image">Image:</label>
     <input type="file" name="image" accept="image/*" required>
-    <textarea class="form-control text-gray-900" rows="6" name="text"></textarea>
+    <textarea class="form-control text-gray-900" rows="6" name="text" placeholder="画像のコメント">{{old('text')}}</textarea>
     <div id="formMap"></div>
-    lat(緯度):<input class="text-gray-900" type="text" name="map_lat" id="lat" required>
-    lng(経度):<input class="text-gray-900" type="text" name="map_lng" id="lng" required>
+    lat(緯度):<input class="text-gray-900" type="text" name="map_lat" id="lat" value="{{old('map_lat')}}" required>
+    lng(経度):<input class="text-gray-900" type="text" name="map_lng" id="lng" value="{{old('map_lng')}}" required>
     <button type="submit">Upload Image</button>
 </form>
-
-@if (session('success'))
-    {{ session('success') }}
-@endif
-{{-- @foreach ($imageFiles as $image)
-    <img src="{{ asset(str_replace('public', 'storage', $image)) }}" alt="Cat Image" style='height:20px'>
-@endforeach --}}
 
 @php
 $catImagesArray = [];
@@ -39,11 +37,13 @@ foreach($catImages as $item) {
         'nices' => $item->nices,
         'user_id' => $item->user_id,
         'map_lat' => $item->map_lat,
-        'map_lng' => $item->map_lng
+        'map_lng' => $item->map_lng,
+        'comments' => $item->comments,
     ];
 };
 @endphp
 
+{{-- 画像一覧 --}}
 @if ($catImagesArray)
 @foreach (array_map(null, $catImagesArray, $nices) as [$catImage, $nice])
     <p>{{ $catImage['id'] }}</p>
@@ -52,37 +52,67 @@ foreach($catImages as $item) {
     <p>{!! nl2br(e($catImage['text'])) !!}</p>
 
     @if ($catImage['user_id'] === $id)
-        <form method="post" action="{{ route('create.destroy', ['id'=>$catImage['id']]) }}">
+        <form method="post" action="{{ route('catimage.destroy', ['id'=>$catImage['id']]) }}">
             @csrf
             <button type="submit">削除</button>
         </form>
     @endif
 
+    {{-- いいね --}}
     @if(!$nice)
-        <a href="" class="js-like-toggle btn btn-secondary btn-sm" data-postid="{{ $catImage['id'] }}">
+        <a href="" class="js-nice-toggle btn btn-secondary btn-sm" data-postid="{{ $catImage['id'] }}">
             <span class="niceText">いいね</span>
-            <!-- 「いいね」の数を表示 -->
             <span class="badge">
                 {{ count($catImage['nices']) }}
             </span>
         </a>
     @else
-        <a href="" class="js-like-toggle btn btn-secondary btn-sm" data-postid="{{ $catImage['id'] }}">
+        <a href="" class="js-nice-toggle btn btn-secondary btn-sm niced" data-postid="{{ $catImage['id'] }}">
             <span class="niceText">いいね削除</span>
-            <!-- 「いいね」の数を表示 -->
             <span class="badge">
                 {{ count($catImage['nices']) }}
             </span>
         </a>
     @endif
-    <br>
+
+    <br><br>コメント{{ count($catImage['comments']) }}件<br>
+    @if ($catImage['comments'])
+        @foreach ($catImage['comments'] as $comment)
+            {{ $comment->comment }}
+            <br>
+            @if ($catImage['user_id'] === $id)
+                <form method="post" action="{{ route('comment.destroy', ['id'=>$comment['id']]) }}">
+                    @csrf
+                    <button type="submit">削除</button>
+                </form>
+            @endif
+            <br>
+        @endforeach
+    @endif
+    
+    <br><br>
+
+    {{-- コメント投稿フォーム --}}
+    <div class="card mb-4">
+        <form method="post" action="{{route('comment.store')}}">
+            @csrf
+            <input type="hidden" name='catimage_id' value="{{$catImage['id']}}">
+            <div class="form-group">
+                <textarea name="comment" class="form-control text-gray-900" id="comment" cols="30" rows="5" placeholder="コメントを入力する">{{old('comment')}}</textarea>
+            </div>
+            <div class="form-group mt-4">
+                <button class="btn btn-success float-right mb-3 mr-3">コメントする</button>
+            </div>
+        </form>
+    </div>
+
 @endforeach
 @endif
     {{ $catImages->links() }}
 
 <script>
 $(function () {
-    var like = $('.js-like-toggle');
+    var like = $('.js-nice-toggle');
     var likePostId;
 
     like.on('click', function () {
@@ -102,8 +132,7 @@ $(function () {
             dataType: "json",
         })
         .done(function (data) {
-            // thisNice.toggleClass('loved'); 
-            console.log(data.message);
+            thisNice.toggleClass('niced');
 
             if(data.niced) {
                 thisNice.children('.niceText').text('いいね削除');
@@ -111,11 +140,8 @@ $(function () {
                 thisNice.children('.niceText').text('いいね');
             }
             thisNice.children('.badge').text(data.countNices);
-            //.likesCountの次の要素のhtmlを「data.postLikesCount」の値に書き換える
-            // $this.next('.likesCount').html(data.postLikesCount); 
 
         })
-        // Ajaxリクエストが失敗した場合
         .fail(function (data, xhr, err) {
             console.log('エラー');
             console.log(err);
@@ -138,7 +164,7 @@ $(function () {
     width: 600px;
     height: 600px;
 }
-.loved {
+.niced {
     background-color: white;
 }
 </style>
@@ -178,7 +204,16 @@ async function initMap() {
 
 // フォーム用マップ　位置情報取得用
 function getClickLatLng(lat_lng, formMap) {
-    // 座標を表示
+
+    // マーカーを全削除
+    // var marker = new google.maps.Marker({
+    //     position: lat_lng,
+    //     map: formMap
+    // });
+    // marker.setMap(null);
+    // marker.setVisible(false);
+	// marker = null;
+
     document.getElementById('lat').value = lat_lng.lat();
     document.getElementById('lng').value = lat_lng.lng();
 

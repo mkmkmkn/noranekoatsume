@@ -18,13 +18,13 @@ $id = Auth::user()->id;
 <form action="{{ route('upload.catimage') }}" method="POST" enctype="multipart/form-data">
     @csrf
     <label for="title">Title:</label>
-    <input class="text-gray-900" type="text" name="title" required>
+    <input class="text-gray-900" type="text" name="title" value="{{old('title')}}" placeholder="画像タイトル" required>
     <label for="image">Image:</label>
     <input type="file" name="image" accept="image/*" required>
-    <textarea class="form-control text-gray-900" rows="6" name="text"></textarea>
+    <textarea class="form-control text-gray-900" rows="6" name="text" placeholder="画像のコメント">{{old('text')}}</textarea>
     <div id="formMap"></div>
-    lat(緯度):<input class="text-gray-900" type="text" name="map_lat" id="lat" required>
-    lng(経度):<input class="text-gray-900" type="text" name="map_lng" id="lng" required>
+    lat(緯度):<input class="text-gray-900" type="text" name="map_lat" id="lat" value="{{old('map_lat')}}" required>
+    lng(経度):<input class="text-gray-900" type="text" name="map_lng" id="lng" value="{{old('map_lng')}}" required>
     <button type="submit">Upload Image</button>
 </form>
 
@@ -77,12 +77,9 @@ foreach($catImages as $item) {
         </a>
     @endif
 
-    <br>
-    <br>
-    
+    <br><br>
     コメント{{ count($catImage['comments']) }}件
     <br>
-
     {{-- @php
         var_dump('<pre>');
         var_dump($catImages);
@@ -101,16 +98,10 @@ foreach($catImages as $item) {
     @endif
     <br>
     
-    {{-- @php
-        var_dump('<pre>');
-        var_dump($comment);
-        var_dump('</pre>');
-    @endphp --}}
     @endforeach
     @endif
     
-    <br>
-    <br>
+    <br><br>
 
     {{-- コメント投稿フォーム --}}
     <div class="card mb-4">
@@ -118,7 +109,7 @@ foreach($catImages as $item) {
             @csrf
             <input type="hidden" name='catimage_id' value="{{$catImage['id']}}">
             <div class="form-group">
-                <textarea name="comment" class="form-control" id="comment" cols="30" rows="5" 
+                <textarea name="comment" class="form-control text-gray-900" id="comment" cols="30" rows="5" 
                 placeholder="コメントを入力する">{{old('comment')}}</textarea>
             </div>
             <div class="form-group mt-4">
@@ -153,8 +144,7 @@ $(function () {
             dataType: "json",
         })
         .done(function (data) {
-            // thisNice.toggleClass('loved'); 
-            console.log(data.message);
+            thisNice.toggleClass('loved'); 
 
             if(data.niced) {
                 thisNice.children('.niceText').text('いいね削除');
@@ -162,11 +152,8 @@ $(function () {
                 thisNice.children('.niceText').text('いいね');
             }
             thisNice.children('.badge').text(data.countNices);
-            //.likesCountの次の要素のhtmlを「data.postLikesCount」の値に書き換える
-            // $this.next('.likesCount').html(data.postLikesCount); 
 
         })
-        // Ajaxリクエストが失敗した場合
         .fail(function (data, xhr, err) {
             console.log('エラー');
             console.log(err);
@@ -239,7 +226,16 @@ async function initMap() {
 
 // フォーム用マップ　位置情報取得用
 function getClickLatLng(lat_lng, formMap) {
-    // 座標を表示
+
+    // マーカーを全削除
+    // var marker = new google.maps.Marker({
+    //     position: lat_lng,
+    //     map: formMap
+    // });
+    // marker.setMap(null);
+    // marker.setVisible(false);
+	// marker = null;
+
     document.getElementById('lat').value = lat_lng.lat();
     document.getElementById('lng').value = lat_lng.lng();
 
