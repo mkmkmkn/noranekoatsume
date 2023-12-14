@@ -34,7 +34,11 @@
 
             <!-- Page Content -->
             <main>
-                {{-- {{ $slot }} --}}
+                @php
+                if(isset($slot)) {
+                    echo $slot; 
+                }
+                @endphp
                 @yield('content')
             </main>
         </div>
