@@ -49,7 +49,7 @@ foreach($catImages as $item) {
 {{-- 画像一覧 --}}
 @if ($catImagesArray)
 @foreach (array_map(null, $catImagesArray, $nices) as [$catImage, $nice])
-    <img src="{{ isset($catImage['usericon_path']) ? asset('storage/' . $catImage['usericon_path']) : asset('img/user_icon.png') }}" alt="投稿したユーザーアイコン" style='height:100px'>
+    <img src="{{ isset($catImage['usericon_path']) ? asset('storage/' . $catImage['usericon_path']) : asset('img/user_icon.png') }}" alt="投稿したユーザーアイコン" style='height:30px; border-radius:100px'>
     <p>{{ $catImage['name'] }}</p>
     <p>{{ $catImage['id'] }}</p>
     <p>{{ $catImage['title'] }}</p>
@@ -83,9 +83,11 @@ foreach($catImages as $item) {
     <br><br>コメント{{ count($catImage['comments']) }}件<br>
     @if ($catImage['comments'])
         @foreach ($catImage['comments'] as $comment)
+            <img src="{{ isset($comment->user->usericon_path) ? asset('storage/' . $comment->user->usericon_path) : asset('img/user_icon.png') }}" alt="投稿したユーザーアイコン" style='height:30px; width:30px; object-fit:cover; border-radius:100px'>
+            {{ $comment->user->name }}
             {{ $comment->comment }}
             <br>
-            @if ($catImage['user_id'] === $id)
+            @if ($comment->user->id === $id)
                 <form method="post" action="{{ route('comment.destroy', ['id'=>$comment['id']]) }}">
                     @csrf
                     <button type="submit">削除</button>
