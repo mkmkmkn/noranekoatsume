@@ -36,7 +36,7 @@ class ProfileController extends Controller
         $path = null;
         if ($request->hasFile('usericon')) {
             $path = $request->file('usericon')->store('user-icons', 'public');
-            $request->user()->user_icon_path = $path;
+            $request->user()->usericon_path = $path;
         }
 
         $request->user()->save();

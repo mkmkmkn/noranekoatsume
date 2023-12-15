@@ -40,6 +40,8 @@ foreach($catImages as $item) {
         'map_lat' => $item->map_lat,
         'map_lng' => $item->map_lng,
         'comments' => $item->comments,
+        'name' => $item->name,
+        'usericon_path' => $item->usericon_path,
     ];
 };
 @endphp
@@ -47,9 +49,11 @@ foreach($catImages as $item) {
 {{-- 画像一覧 --}}
 @if ($catImagesArray)
 @foreach (array_map(null, $catImagesArray, $nices) as [$catImage, $nice])
+    <img src="{{ isset($catImage['usericon_path']) ? asset('storage/' . $catImage['usericon_path']) : asset('img/user_icon.png') }}" alt="投稿したユーザーアイコン" style='height:100px'>
+    <p>{{ $catImage['name'] }}</p>
     <p>{{ $catImage['id'] }}</p>
     <p>{{ $catImage['title'] }}</p>
-    <img src="{{ asset('storage/catimages/' . $catImage['image_path']) }}" alt="Cat Image" style='height:100px'>
+    <img src="{{ asset('storage/catimages/' . $catImage['image_path']) }}" alt="投稿したイメージ" style='height:100px'>
     <p>{!! nl2br(e($catImage['text'])) !!}</p>
 
     @if ($catImage['user_id'] === $id)

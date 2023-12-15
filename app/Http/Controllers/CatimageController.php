@@ -20,7 +20,10 @@ class CatimageController extends Controller
         // $catImages = Catimage::with('nices')->get()->toArray();
         // $niceGet = Catimage::with('nices')->get();
 
-        $catImages = Catimage::with('nices','comments')->paginate(2);
+        $catImages = Catimage::with('nices','comments')
+            ->leftJoin('users', 'catimages.user_id', '=', 'users.id')
+            ->paginate(2);
+
         $niceGet = Catimage::with('nices')->paginate(2);
 
         $nices = array();
