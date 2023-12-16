@@ -24,6 +24,11 @@
                         {{ __('Album') }}
                     </x-nav-link>
                 </div>
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <x-nav-link :href="route('catimage_upload')" :active="request()->routeIs('catimage_upload')">
+                        {{ __('Upload') }}
+                    </x-nav-link>
+                </div>
             </div>
 
             <!-- Settings Dropdown -->

@@ -1,0 +1,21 @@
+.container {
+  width: 94%;
+  max-width: 1180px;
+  margin: auto;
+}
+
+.album_archive_3column {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+}
+.album_archive_3column .item {
+  width: 32.9833333333%;
+  margin: 0.175%;
+}
+.album_archive_3column .item img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1/1;
+  object-fit: cover;
+}/*# sourceMappingURL=style.css.map */
