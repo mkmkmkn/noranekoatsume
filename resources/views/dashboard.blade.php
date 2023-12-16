@@ -31,17 +31,17 @@ $id = Auth::user()->id;
 $catImagesArray = [];
 foreach($catImages as $item) {
     $catImagesArray[] = [
-        'id' => $item->id,
-        'title' => $item->title,
-        'image_path' => $item->image_path,
-        'text' => $item->text,
-        'nices' => $item->nices,
-        'user_id' => $item->user_id,
-        'map_lat' => $item->map_lat,
-        'map_lng' => $item->map_lng,
-        'comments' => $item->comments,
-        'name' => $item->name,
-        'usericon_path' => $item->usericon_path,
+        // 'id' => $item->id,
+        // 'title' => $item->title,
+        // 'image_path' => $item->image_path,
+        // 'text' => $item->text,
+        // 'nices' => $item->nices,
+        // 'user_id' => $item->user_id,
+        // 'map_lat' => $item->map_lat,
+        // 'map_lng' => $item->map_lng,
+        // 'comments' => $item->comments,
+        // 'name' => $item->name,
+        'catimage' => $item,
     ];
 };
 @endphp
@@ -49,15 +49,15 @@ foreach($catImages as $item) {
 {{-- 画像一覧 --}}
 @if ($catImagesArray)
 @foreach (array_map(null, $catImagesArray, $nices) as [$catImage, $nice])
-    <img src="{{ isset($catImage['usericon_path']) ? asset('storage/' . $catImage['usericon_path']) : asset('img/user_icon.png') }}" alt="投稿したユーザーアイコン" style='height:30px; border-radius:100px'>
-    <p>{{ $catImage['name'] }}</p>
-    <p>{{ $catImage['id'] }}</p>
-    <p>{{ $catImage['title'] }}</p>
-    <img src="{{ asset('storage/catimages/' . $catImage['image_path']) }}" alt="投稿したイメージ" style='height:100px'>
-    <p>{!! nl2br(e($catImage['text'])) !!}</p>
+    <img src="{{ isset($catImage['catimage']->user->usericon_path) ? asset('storage/' . $catImage['catimage']->user->usericon_path) : asset('img/user_icon.png') }}" alt="投稿したユーザーアイコン" style='height:30px; width:30px; object-fit:cover; border-radius:100px'>
+    <p>{{ $catImage['catimage']->user->name }}</p>
+    <p>{{ $catImage['catimage']->id }}</p>
+    <p>{{ $catImage['catimage']->title }}</p>
+    <img src="{{ asset('storage/catimages/' . $catImage['catimage']->image_path) }}" alt="投稿したイメージ" style='height:100px'>
+    <p>{!! nl2br(e($catImage['catimage']->text)) !!}</p>
 
-    @if ($catImage['user_id'] === $id)
-        <form method="post" action="{{ route('catimage.destroy', ['id'=>$catImage['id']]) }}">
+    @if ($catImage['catimage']->user_id === $id)
+        <form method="post" action="{{ route('catimage.destroy', ['id'=>$catImage['catimage']->id]) }}">
             @csrf
             <button type="submit">削除</button>
         </form>
@@ -65,24 +65,24 @@ foreach($catImages as $item) {
 
     {{-- いいね --}}
     @if(!$nice)
-        <a href="" class="js-nice-toggle btn btn-secondary btn-sm" data-postid="{{ $catImage['id'] }}">
+        <a href="" class="js-nice-toggle btn btn-secondary btn-sm" data-postid="{{ $catImage['catimage']->id }}">
             <span class="niceText">いいね</span>
             <span class="badge">
-                {{ count($catImage['nices']) }}
+                {{ count($catImage['catimage']->nices) }}
             </span>
         </a>
     @else
-        <a href="" class="js-nice-toggle btn btn-secondary btn-sm niced" data-postid="{{ $catImage['id'] }}">
+        <a href="" class="js-nice-toggle btn btn-secondary btn-sm niced" data-postid="{{ $catImage['catimage']->id }}">
             <span class="niceText">いいね削除</span>
             <span class="badge">
-                {{ count($catImage['nices']) }}
+                {{ count($catImage['catimage']->nices) }}
             </span>
         </a>
     @endif
 
-    <br><br>コメント{{ count($catImage['comments']) }}件<br>
-    @if ($catImage['comments'])
-        @foreach ($catImage['comments'] as $comment)
+    <br><br>コメント{{ count($catImage['catimage']->comments) }}件<br>
+    @if ($catImage['catimage']->comments)
+        @foreach ($catImage['catimage']->comments as $comment)
             <img src="{{ isset($comment->user->usericon_path) ? asset('storage/' . $comment->user->usericon_path) : asset('img/user_icon.png') }}" alt="投稿したユーザーアイコン" style='height:30px; width:30px; object-fit:cover; border-radius:100px'>
             {{ $comment->user->name }}
             {{ $comment->comment }}
@@ -103,7 +103,7 @@ foreach($catImages as $item) {
     <div class="card mb-4">
         <form method="post" action="{{route('comment.store')}}">
             @csrf
-            <input type="hidden" name='catimage_id' value="{{$catImage['id']}}">
+            <input type="hidden" name='catimage_id' value="{{$catImage['catimage']->id}}">
             <div class="form-group">
                 <textarea name="comment" class="form-control text-gray-900" id="comment" cols="30" rows="5" placeholder="コメントを入力する">{{old('comment')}}</textarea>
             </div>
@@ -172,7 +172,7 @@ $(function () {
     height: 600px;
 }
 .niced {
-    background-color: white;
+    background-color: lightcoral;
 }
 </style>
 
@@ -194,12 +194,12 @@ async function initMap() {
 
     // 画像の位置情報をマップに配置
     catImages.forEach(e => {
-        markerLatLng = {lat: Number(e['map_lat']), lng: Number(e['map_lng'])};
+        markerLatLng = {lat: Number(e['catimage']['map_lat']), lng: Number(e['catimage']['map_lng'])};
         console.log(markerLatLng);
         var marker = new google.maps.Marker({
             position: markerLatLng,
             map: map,
-            title: e['title']
+            title: e['catimage']['title']
         });
     });
 
