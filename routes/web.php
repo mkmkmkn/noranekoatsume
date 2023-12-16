@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CatimageController;
+use App\Http\Controllers\CatimageUploadController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\AlbumController;
 use App\Http\Controllers\NiceController;
@@ -32,8 +33,10 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
         
     Route::get('/dashboard', [CatimageController::class, 'index'])->name('dashboard');
-    Route::post('/upload', [CatimageController::class, 'store'])->name('catimage.store');
     Route::post('/destroy{id}', [CatimageController::class, 'destroy'])->name('catimage.destroy');
+
+    Route::get('/catimage_upload', [CatimageUploadController::class, 'index'])->name('catimage_upload');
+    Route::post('/upload', [CatimageUploadController::class, 'store'])->name('catimage.store');
 
     Route::get('/album', [AlbumController::class, 'index'])->name('album');
 });
