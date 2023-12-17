@@ -83,6 +83,12 @@
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('album')" :active="request()->routeIs('dashboard')">
+                {{ __('Album') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('catimage_upload')" :active="request()->routeIs('dashboard')">
+                {{ __('Upload') }}
+            </x-responsive-nav-link>
         </div>
 
         <!-- Responsive Settings Options -->
