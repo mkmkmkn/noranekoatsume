@@ -77,4 +77,8 @@
 }
 .catimage_upload_section .inputHidden {
   display: none;
+}
+
+.profile_section .usericon_input {
+  flex-direction: column;
 }/*# sourceMappingURL=style.css.map */

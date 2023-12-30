@@ -1,6 +1,6 @@
 
-<div class="flex mb-4" x-data="userIconPreview()">
-    <div class="mr-3">
+<div class="usericon_input flex mb-4" x-data="userIconPreview()">
+    <div class="mr-3 mb-4">
         <img
             id="preview"
             src="{{ isset(Auth::user()->usericon_path) ? asset('storage/' . Auth::user()->usericon_path) : asset('img/user_icon.png') }}"
@@ -14,11 +14,11 @@
             type="button"
             class="inline-flex items-center uppercase rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
         >
-            SELECT A NEW PHOTO
+            プロフィール画像を編集
         </button>
         <input @change="showPreview(event)" type="file" name="usericon" id="user_icon" class="hidden">
         <script>
-            function userIconPreview() { 
+            function userIconPreview() {
                 return {
                     showPreview: (event) =>{
                         if(event.target.files.length > 0){
