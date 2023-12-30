@@ -29,8 +29,10 @@
         @endif
 
         <div id="formMap"></div>
-        緯度:<input class="text-gray-900" type="text" name="map_lat" id="lat" value="{{ old('map_lat') }}" readonly required>
-        経度:<input class="text-gray-900" type="text" name="map_lng" id="lng" value="{{ old('map_lng') }}" readonly required>
+        緯度:<input class="text-gray-900" type="text" name="map_lat" id="lat" value="{{ old('map_lat') }}"
+            readonly required>
+        経度:<input class="text-gray-900" type="text" name="map_lng" id="lng" value="{{ old('map_lng') }}"
+            readonly required>
         @if ($errors->has('map_lat'))
             <span>{{ $errors->first('map_lat') }}</span>
         @endif
@@ -48,7 +50,21 @@
             <img id="preview">
         </div>
 
+        {{-- browser-image-compression --}}
+        <script type="text/javascript"
+            src="https://cdn.jsdelivr.net/npm/browser-image-compression@2.0.0/dist/browser-image-compression.js"></script>
+
+        <div id="original-size"></div>
+        <div id="compressed-size"></div>
+        <p id="compressed-image"></p>
+
+
+
         <script>
+            const originalSize = document.getElementById('original-size');
+            const compressedSize = document.getElementById('compressed-size');
+            const compressedImage = document.getElementById('compressed-image');
+
             document.querySelector('input[name="src-img"]').addEventListener('change', function(changeFileEvent) {
 
                 var fReaderForURI = new FileReader();
@@ -83,15 +99,98 @@
                     const croppedImgFile = new File([imgBlob], 'cropped.png', {
                         type: "image/png"
                     });
-                    const dt = new DataTransfer();
-                    dt.items.add(croppedImgFile);
-                    document.querySelector('input[name="image"]').files = dt.files;
+                    // const dt = new DataTransfer();
+                    // dt.items.add(croppedImgFile);
+                    // document.querySelector('input[name="image"]').files = dt.files;
+
+                    console.log("changeeeeeee");
+                    const imageFile = croppedImgFile;
+
+                    // reset content
+                    originalSize.textContent = '';
+                    compressedSize.textContent = '';
+                    compressedImage.innerHTML = '';
+
+                    const options = {
+                        maxSizeMB: 2,
+                        maxWidthOrHeight: 1920
+                    }
+
+                    imageCompression(imageFile, options)
+                        .then(function(compressedFile) {
+
+                            console.log("changeeeeeee222222");
+                            const img = URL.createObjectURL(compressedFile);
+                            originalSize.textContent =
+                                `元画像のサイズ: ${(imageFile.size / 1024 / 1024).toFixed(2)} MB`;
+                            compressedSize.textContent =
+                                `圧縮した画像のサイズ: ${(compressedFile.size / 1024 / 1024).toFixed(2)} MB`;
+                            compressedImage.innerHTML += `
+                        <a href="${img}" target="_blank">
+                            <img src="${img}" width="400" alt="">
+                        </a>
+                    `
+                            // document.querySelector('input[name="image"]').files = compressedFile;
+
+
+                            const inputImage = new File([compressedFile], 'cropped.png', {
+                                type: "image/png"
+                            });
+
+
+
+
+
+                            const dt = new DataTransfer();
+                            dt.items.add(inputImage);
+                            document.querySelector('input[name="image"]').files = dt.files;
+                        })
+                        .catch(function(error) {
+                            console.log(error.message);
+                        });
                 });
 
                 cropper.destroy();
                 $(".cropper_modal").removeClass("active");
             });
         </script>
+        {{-- <script>
+            const originalSize = document.getElementById('original-size');
+            const compressedSize = document.getElementById('compressed-size');
+            const compressedImage = document.getElementById('compressed-image');
+
+
+            document.querySelector('input[name="image"]').addEventListener('change', function(event) {
+                console.log("changeeeeeee");
+                const imageFile = event.target.files[0];
+
+                // reset content
+                originalSize.textContent = '';
+                compressedSize.textContent = '';
+                compressedImage.innerHTML = '';
+
+                const options = {
+                    maxSizeMB: 2,
+                    maxWidthOrHeight: 1920
+                }
+
+                imageCompression(imageFile, options)
+                    .then(function(compressedFile) {
+                        const img = URL.createObjectURL(compressedFile);
+                        originalSize.textContent = `元画像のサイズ: ${(imageFile.size / 1024 / 1024).toFixed(2)} MB`;
+                        compressedSize.textContent =
+                            `圧縮した画像のサイズ: ${(compressedFile.size / 1024 / 1024).toFixed(2)} MB`;
+                        compressedImage.innerHTML += `
+                        <a href="${img}" target="_blank">
+                            <img src="${img}" width="400" alt="">
+                        </a>
+                    `
+                    })
+                    .catch(function(error) {
+                        console.log(error.message);
+                    });
+            });
+        </script> --}}
 
         {{-- cropper.js --}}
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css"
