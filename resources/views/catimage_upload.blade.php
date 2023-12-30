@@ -8,6 +8,12 @@
 @section('content')
     <!-- コンテンツ -->
 
+    <section class="title_section">
+        <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100 mt-4 mb-4">
+            {{ __('投稿を追加') }}
+        </h2>
+    </section>
+
     @if (session('message'))
         <p class="text-gray-800 dark:text-gray-200">{{ session('message') }}</p>
     @endif
