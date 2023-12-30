@@ -14,8 +14,11 @@
             <span>{{ $errors->first('title') }}</span>
         @endif
 
-        <label for="image">Image:</label>
-        <input type="file" name="image" accept="image/*" required>
+        <label>画像ファイル<input type="file" name="src-img" accept="image/*"></label>
+        <div class="inputHidden">
+            <label for="image">Image:</label>
+            <input type="file" name="image" accept="image/*" required>
+        </div>
         @if ($errors->has('image'))
             <span>{{ $errors->first('image') }}</span>
         @endif
@@ -26,33 +29,43 @@
         @endif
 
         <div id="formMap"></div>
-        lat(緯度):<input class="text-gray-900" type="text" name="map_lat" id="lat" value="{{ old('map_lat') }}"
-            required>
-        lng(経度):<input class="text-gray-900" type="text" name="map_lng" id="lng" value="{{ old('map_lng') }}"
-            required>
+        緯度:<input class="text-gray-900" type="text" name="map_lat" id="lat" value="{{ old('map_lat') }}" readonly required>
+        経度:<input class="text-gray-900" type="text" name="map_lng" id="lng" value="{{ old('map_lng') }}" readonly required>
         @if ($errors->has('map_lat'))
             <span>{{ $errors->first('map_lat') }}</span>
         @endif
 
-        <button type="submit">投稿する</button>
+        <button type="submit" class="submit_button">投稿する</button>
 
-        <img id="cropper-tgt">
-        <div class="control">
-            <label>画像ファイル<input type="file" name="src-img" accept="image/*"></label>
-            <button type="button" id="btn-crop-action">切り取り</button>
+        <div class="cropper_modal">
+            <div class="cropper_modal_inner">
+                <img id="cropper-tgt">
+                <button type="button" id="btn-crop-action" class="submit_button">決定</button>
+            </div>
+        </div>
+
+        <div class="cropper_preview">
             <img id="preview">
         </div>
 
         <script>
             document.querySelector('input[name="src-img"]').addEventListener('change', function(changeFileEvent) {
-                const fReaderForURI = new FileReader();
+
+                var fReaderForURI = new FileReader();
                 fReaderForURI.readAsDataURL(changeFileEvent.target.files[0]);
 
                 fReaderForURI.onload = () => {
-                    const imgEl = document.getElementById('cropper-tgt');
+                    var imgEl = document.getElementById('cropper-tgt');
                     imgEl.src = String(fReaderForURI.result);
 
-                    cropper = new Cropper(imgEl);
+                    var options = {
+                        viewMode: 1,
+                        dragMode: 'move',
+                        responsive: false
+                    };
+
+                    cropper = new Cropper(imgEl, options);
+                    $(".cropper_modal").addClass("active");
                 }
             });
 
@@ -74,6 +87,9 @@
                     dt.items.add(croppedImgFile);
                     document.querySelector('input[name="image"]').files = dt.files;
                 });
+
+                cropper.destroy();
+                $(".cropper_modal").removeClass("active");
             });
         </script>
 
