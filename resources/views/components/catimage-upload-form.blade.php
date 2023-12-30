@@ -10,15 +10,31 @@
         @csrf
         <label for="title">Title:</label>
         <input class="text-gray-900" type="text" name="title" value="{{ old('title') }}" placeholder="画像タイトル" required>
+        @if ($errors->has('title'))
+            <span>{{ $errors->first('title') }}</span>
+        @endif
+
         <label for="image">Image:</label>
         <input type="file" name="image" accept="image/*" required>
+        @if ($errors->has('image'))
+            <span>{{ $errors->first('image') }}</span>
+        @endif
+
         <textarea class="form-control text-gray-900" rows="6" name="text" placeholder="画像のコメント">{{ old('text') }}</textarea>
+        @if ($errors->has('text'))
+            <span>{{ $errors->first('text') }}</span>
+        @endif
+
         <div id="formMap"></div>
         lat(緯度):<input class="text-gray-900" type="text" name="map_lat" id="lat" value="{{ old('map_lat') }}"
             required>
         lng(経度):<input class="text-gray-900" type="text" name="map_lng" id="lng" value="{{ old('map_lng') }}"
             required>
-        <button type="submit">Upload Image</button>
+        @if ($errors->has('map_lat'))
+            <span>{{ $errors->first('map_lat') }}</span>
+        @endif
+
+        <button type="submit">投稿する</button>
 
         <img id="cropper-tgt">
         <div class="control">
