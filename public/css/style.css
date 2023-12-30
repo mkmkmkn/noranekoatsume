@@ -4,6 +4,18 @@
   margin: auto;
 }
 
+.submit_button {
+  min-width: 8rem;
+  padding: 0.5rem 1rem;
+  border: 2px solid white;
+  border-radius: 100px;
+  transition: all 0.3s;
+}
+.submit_button:hover {
+  color: #333;
+  background-color: white;
+}
+
 .album_archive_3column {
   width: 100%;
   display: flex;
@@ -18,4 +30,51 @@
   height: auto;
   aspect-ratio: 1/1;
   object-fit: cover;
+}
+.catimage_upload_section .cropper_modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  background: rgba(0, 0, 0, 0.8);
+  overflow: auto;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.catimage_upload_section .cropper_modal.active {
+  opacity: 1;
+  visibility: visible;
+}
+.catimage_upload_section .cropper_modal_inner {
+  width: 94%;
+  max-width: 640px;
+  height: auto;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.catimage_upload_section .cropper_preview {
+  max-width: 640px;
+  margin: auto;
+}
+.catimage_upload_section .cropper-container {
+  aspect-ratio: 4/3;
+  margin-bottom: 1.5rem;
+}
+.catimage_upload_section .cropper-container img {
+  display: block;
+  width: 94%;
+  height: auto;
+}
+.catimage_upload_section .inputHidden {
+  display: none;
 }/*# sourceMappingURL=style.css.map */
