@@ -9,9 +9,11 @@
     <!-- コンテンツ -->
 
     <section class="title_section">
-        <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100 mt-4 mb-4">
-            {{ __('投稿を追加') }}
-        </h2>
+        <div class="container">
+            <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100 mb-4">
+                {{ __('投稿を追加') }}
+            </h2>
+        </div>
     </section>
 
     @if (session('message'))
