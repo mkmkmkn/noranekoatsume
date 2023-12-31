@@ -78,6 +78,12 @@
 .catimage_upload_section .inputHidden {
   display: none;
 }
+.catimage_upload_list li .formMap {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4/3;
+  margin: auto;
+}
 
 .profile_section .usericon_input {
   flex-direction: column;
