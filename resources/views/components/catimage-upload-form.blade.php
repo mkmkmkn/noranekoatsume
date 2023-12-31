@@ -15,17 +15,18 @@
                     @endif
                 </li>
                 <li>
+                    {{-- <button id="imageButton">ファイルを選択</button> --}}
                     <label>画像ファイル<input type="file" name="src-img" accept="image/*"></label>
                     <div class="inputHidden">
                         <label for="image">Image:</label>
                         <input type="file" name="image" accept="image/*" required>
                     </div>
 
-                    <script>
-                        document.querySelector("button").addEventListener("click", () => {
-                            document.querySelector("input").click();
+                    {{-- <script>
+                        document.querySelector("#imageButton").addEventListener("click", () => {
+                            document.querySelector("input[name='image']").click();
                         });
-                    </script>
+                    </script> --}}
 
                     @if ($errors->has('image'))
                         <span>{{ $errors->first('image') }}</span>
