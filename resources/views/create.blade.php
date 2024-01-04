@@ -89,7 +89,7 @@ foreach($catImages as $item) {
     @foreach ($catImage['comments'] as $comment)
     {{ $comment->comment }}
     <br>
-    
+
     @if ($catImage['user_id'] === $id)
         <form method="post" action="{{ route('comment.destroy', ['id'=>$comment['id']]) }}">
             @csrf
@@ -97,10 +97,10 @@ foreach($catImages as $item) {
         </form>
     @endif
     <br>
-    
+
     @endforeach
     @endif
-    
+
     <br><br>
 
     {{-- コメント投稿フォーム --}}
@@ -109,7 +109,7 @@ foreach($catImages as $item) {
             @csrf
             <input type="hidden" name='catimage_id' value="{{$catImage['id']}}">
             <div class="form-group">
-                <textarea name="comment" class="form-control text-gray-900" id="comment" cols="30" rows="5" 
+                <textarea name="comment" class="form-control text-gray-900" id="comment" cols="30" rows="5"
                 placeholder="コメントを入力する">{{old('comment')}}</textarea>
             </div>
             <div class="form-group mt-4">
@@ -144,7 +144,7 @@ $(function () {
             dataType: "json",
         })
         .done(function (data) {
-            thisNice.toggleClass('loved'); 
+            thisNice.toggleClass('loved');
 
             if(data.niced) {
                 thisNice.children('.niceText').text('いいね削除');
@@ -159,14 +159,14 @@ $(function () {
             console.log(err);
             console.log(xhr);
         });
-        
+
         return false;
     });
 });
 </script>
 
 <div id="map"></div>
-    
+
 @php
     // var_dump('<pre>');
     // var_dump($catImages);
