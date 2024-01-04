@@ -20,7 +20,7 @@
 @if (session('message'))
     <p class="text-gray-800 dark:text-gray-200">{{ session('message') }}</p>
 @endif
-    
+
 @php
 $catImagesArray = [];
 foreach($catImages as $item) {
@@ -83,7 +83,7 @@ foreach($catImages as $item) {
             <br>
         @endforeach
     @endif
-    
+
     <br><br>
 
     {{-- コメント投稿フォーム --}}
@@ -106,11 +106,55 @@ foreach($catImages as $item) {
 
 <div id="map"></div>
 
+
 <script>
     if (@json($catImagesArray).length) {
         var catImages = @json($catImagesArray);
     }
 </script>
+
+<script>
+// いいね機能
+$(function () {
+    var like = $(".js-nice-toggle");
+    var likePostId;
+
+    like.on("click", function () {
+        likePostId = $(this).data("postid");
+        thisNice = $(this);
+
+        $.ajax({
+            headers: {
+                "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+            },
+            url: "{{ route('nice') }}",
+            type: "POST",
+            data: {
+                id: likePostId,
+            },
+            dataType: "json",
+        })
+            .done(function (data) {
+                thisNice.toggleClass("niced");
+
+                if (data.niced) {
+                    thisNice.children(".niceText").text("いいね削除");
+                } else {
+                    thisNice.children(".niceText").text("いいね");
+                }
+                thisNice.children(".badge").text(data.countNices);
+            })
+            .fail(function (data, xhr, err) {
+                console.log("エラー");
+                console.log(err);
+                console.log(xhr);
+            });
+
+        return false;
+    });
+});
+</script>
+
 <script src="{{ asset('/js/script.js') }}"></script>
 <script src="{{ asset('/js/googlemap.js') }}"></script>
 <script async src="{{ config('services.google-map.apikey') }}"></script>
