@@ -7,51 +7,76 @@
 
             <ul class="catimage_upload_list">
                 <li>
-                    <label for="title">タイトル</label>
-                    <input class="text-gray-900" type="text" name="title" value="{{ old('title') }}"
-                        placeholder="画像タイトル" required>
+                    <div class="left">
+                        <label class="title" for="title">タイトル</label>
+                    </div>
+                    <div class="right">
+                        <input class="text-gray-900" type="text" name="title" value="{{ old('title') }}"
+                            placeholder="画像タイトル" required>
+                    </div>
                     @if ($errors->has('title'))
                         <span>{{ $errors->first('title') }}</span>
                     @endif
                 </li>
                 <li>
-                    {{-- <button id="imageButton">ファイルを選択</button> --}}
-                    <label>画像ファイル<input type="file" name="src-img" accept="image/*"></label>
+                    <div class="left">
+                        <p class="title">画像</p>
+                    </div>
+                    <div class="right">
+                        <div class="top">
+                            <label class="submit_button">画像を選ぶ
+                                <input type="file" name="src-img" accept="image/*" class="inputHidden">
+                            </label>
+                            <p class="fileName">画像が選択されていません</p>
+                        </div>
+                        <div class="bottom cropper_preview">
+                            <img id="preview" class="inputHidden">
+                            <div id="original-size" class="inputHidden"></div>
+                            <div id="compressed-size" class="inputHidden"></div>
+                            <p id="compressed-image"></p>
+                        </div>
+                    </div>
                     <div class="inputHidden">
                         <label for="image">Image:</label>
                         <input type="file" name="image" accept="image/*" required>
                     </div>
-
-                    {{-- <script>
-                        document.querySelector("#imageButton").addEventListener("click", () => {
-                            document.querySelector("input[name='image']").click();
-                        });
-                    </script> --}}
-
                     @if ($errors->has('image'))
                         <span>{{ $errors->first('image') }}</span>
                     @endif
                 </li>
                 <li>
-                    <textarea class="form-control text-gray-900" rows="6" name="text" placeholder="画像のコメント">{{ old('text') }}</textarea>
+                    <div class="left">
+                        <label class="title" for="text">コメント</label>
+                    </div>
+                    <div class="right">
+                        <textarea class="form-control text-gray-900" rows="6" name="text" placeholder="画像のコメント">{{ old('text') }}</textarea>
+                    </div>
                     @if ($errors->has('text'))
                         <span>{{ $errors->first('text') }}</span>
                     @endif
                 </li>
                 <li>
-                    <p class="map_label">撮影場所</p>
-                    <div id="formMap" class="formMap"></div>
-                    緯度:<input class="text-gray-900" type="text" name="map_lat" id="lat"
-                        value="{{ old('map_lat') }}" readonly required>
-                    経度:<input class="text-gray-900" type="text" name="map_lng" id="lng"
-                        value="{{ old('map_lng') }}" readonly required>
+                    <div class="left">
+                        <p class="map_label">撮影場所</p>
+                    </div>
+                    <div class="right">
+                        <div id="formMap" class="formMap"></div>
+                    </div>
+                    <div class="inputHidden">
+                        <p class="">緯度:</p>
+                        <input class="text-gray-900" type="text" name="map_lat" id="lat"
+                            value="{{ old('map_lat') }}" readonly required>
+                        <p class="">経度:</p>
+                        <input class="text-gray-900" type="text" name="map_lng" id="lng"
+                            value="{{ old('map_lng') }}" readonly required>
+                    </div>
                     @if ($errors->has('map_lat'))
                         <span>{{ $errors->first('map_lat') }}</span>
                     @endif
                 </li>
             </ul>
 
-            <button type="submit" class="submit_button">投稿する</button>
+            <button type="submit" class="submit_button form_submit_button">投稿する</button>
 
             <div class="cropper_modal">
                 <div class="cropper_modal_inner">
@@ -60,12 +85,12 @@
                 </div>
             </div>
 
-            <div class="cropper_preview">
-                {{-- <img id="preview"> --}}
-                <div id="original-size"></div>
-                <div id="compressed-size"></div>
-                <p id="compressed-image"></p>
-            </div>
+            <script>
+                $('input[name="src-img"]').on('change', function() {
+                    var file = $(this).prop('files')[0];
+                    $('.fileName').text(file.name);
+                });
+            </script>
 
             <script>
                 const originalSize = document.getElementById('original-size');
@@ -124,11 +149,7 @@
                                     `元画像のサイズ: ${(imageFile.size / 1024 / 1024).toFixed(2)} MB`;
                                 compressedSize.textContent =
                                     `圧縮した画像のサイズ: ${(compressedFile.size / 1024 / 1024).toFixed(2)} MB`;
-                                compressedImage.innerHTML += `
-                            <a href="${img}" target="_blank">
-                                <img src="${img}" width="400" alt="">
-                            </a>
-                        `
+                                compressedImage.innerHTML += `<img src="${img}" alt="">`
                                 const inputImage = new File([compressedFile], 'cropped.jpeg', {
                                     type: "image/jpeg"
                                 });

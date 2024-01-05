@@ -26,7 +26,8 @@ async function initMap() {
     if (document.getElementById("formMap") != null) {
         formMap = new Map(document.getElementById("formMap"), {
             center: japan,
-            zoom: 4.8,
+            // zoom: 4.8,
+            zoom: 4,
         });
         // クリックイベントを追加
         formMap.addListener("click", function (e) {
