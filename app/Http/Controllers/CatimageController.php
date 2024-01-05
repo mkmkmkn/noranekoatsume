@@ -14,8 +14,8 @@ class CatimageController extends Controller
 {
     public function index()
     {
-        $catImages = Catimage::with('nices','comments')->paginate(10);
-        $niceGet = Catimage::with('nices')->paginate(10);
+        $catImages = Catimage::with('nices','comments')->orderBy('id','desc')->paginate(10);
+        $niceGet = Catimage::with('nices')->orderBy('id','desc')->paginate(10);
 
         $nices = array();
         foreach ($niceGet as $catImage) {
@@ -30,7 +30,7 @@ class CatimageController extends Controller
 
         return view('dashboard', compact('catImages', 'nices'));
     }
-    
+
     public function destroy($id)
     {
         $catimage = Catimage::find($id);
