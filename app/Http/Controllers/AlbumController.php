@@ -14,8 +14,8 @@ class AlbumController extends Controller
 {
     public function index()
     {
-        $catImages = Catimage::with('nices','comments')->paginate(10);
-        $niceGet = Catimage::with('nices')->paginate(10);
+        $catImages = Catimage::with('nices','comments')->orderBy('id','desc')->paginate(9);
+        $niceGet = Catimage::with('nices')->orderBy('id','desc')->paginate(9);
 
         $nices = array();
         foreach ($niceGet as $catImage) {
