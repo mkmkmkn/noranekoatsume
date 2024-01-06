@@ -1,0 +1,224 @@
+@charset "utf-8";
+
+/* -----------------------------------------------
+レスポンシブ　表示/非表示切り替え
+----------------------------------------------- */
+.on1366,
+.on1024,
+.on768,
+.on480,
+.on375 {
+    display: none;
+}
+@media (width <= 1366px) {
+    .off1366 {
+        display: none;
+    }
+    .on1366 {
+        display: block;
+    }
+}
+@media (width <= 1024px) {
+    .off1024 {
+        display: none;
+    }
+    .on1024 {
+        display: block;
+    }
+}
+@media (width <= 768px) {
+    .off768 {
+        display: none;
+    }
+    .on768 {
+        display: block;
+    }
+}
+@media (width <= 480px) {
+    .off480 {
+        display: none;
+    }
+    .on480 {
+        display: block;
+    }
+}
+
+/* -----------------------------------------------
+フォント太さ
+----------------------------------------------- */
+.fl {
+    font-weight: 300;
+}
+.fr {
+    font-weight: 400;
+}
+.fm {
+    font-weight: 500;
+}
+.fb {
+    font-weight: 700;
+}
+
+/* -----------------------------------------------
+フォントサイズ
+----------------------------------------------- */
+.f12 {
+    font-size: 0.75rem;
+}
+.f14 {
+    font-size: 0.875rem;
+}
+.f16 {
+    font-size: 1rem;
+}
+.f18 {
+    font-size: 1.125rem;
+}
+.f20 {
+    font-size: 1.25rem;
+}
+.f24 {
+    font-size: 1.5rem;
+}
+.f28 {
+    font-size: 1.75rem;
+}
+.f32 {
+    font-size: 2rem;
+}
+.f40 {
+    font-size: 2.5rem;
+}
+.f48 {
+    font-size: 3rem;
+}
+.f64 {
+    font-size: 4rem;
+}
+
+/* -----------------------------------------------
+フォント高さ
+----------------------------------------------- */
+.lh1 {
+    line-height: 1;
+}
+.lh1\.25 {
+    line-height: 1.25;
+}
+.lh1\.5 {
+    line-height: 1.5;
+}
+.lh1\.75 {
+    line-height: 1.75;
+}
+.lh2 {
+    line-height: 2;
+}
+
+/* -----------------------------------------------
+フォントファミリー
+----------------------------------------------- */
+.kiwimaru {
+    font-family:
+        Kiwi Maru,
+        serif;
+}
+.kaisei {
+    font-family:
+        Kaisei Opti,
+        serif;
+}
+.roboto {
+    font-family: "Roboto", sans-serif;
+}
+.materialicon {
+    font-family: Material Symbols Outlined;
+    font-display: auto!important;
+    font-variation-settings: "FILL" 1,"wght" 400,"GRAD" 0,"opsz" 48;
+}
+
+/* -----------------------------------------------
+フォントカラー
+----------------------------------------------- */
+.fwhite {
+    color: white;
+}
+.fgray {
+    color: #666;
+}
+.fblack {
+    color: #000;
+}
+
+/* -----------------------------------------------
+カーソル　hoverしたらハイライト
+----------------------------------------------- */
+.opa {
+    transition: 0.3s;
+    cursor: pointer;
+
+    &:hover {
+        opacity: 0.7;
+    }
+}
+
+/* -----------------------------------------------
+カーソル　hoverしたら下線
+----------------------------------------------- */
+.underline_hover {
+    position: relative;
+
+    &::before {
+        content: "";
+        opacity: 0;
+        position: absolute;
+        bottom: -0.125rem;
+        width: 100%;
+        left: 50%;
+        border-bottom: 1px solid;
+        transform: translate(-50%, 0);
+        transition: all 0.3s;
+    }
+    &:hover {
+        &::before {
+            opacity: 1;
+        }
+    }
+}
+
+/* -----------------------------------------------
+カーソル　hoverしたら画像ズーム
+----------------------------------------------- */
+.zoom_hover {
+    &_inner {
+        overflow: hidden;
+
+        img {
+            transform: scale(1);
+            transition: 0.3s ease-in-out;
+        }
+    }
+    &:hover {
+        .zoom_hover_inner {
+            img {
+                transform: scale(1.2);
+            }
+        }
+    }
+}
+
+/* -----------------------------------------------
+その他
+----------------------------------------------- */
+.ellipsis {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+body {
+    font-family:
+        Kiwi Maru,
+        serif;
+    font-weight: 400;
+}

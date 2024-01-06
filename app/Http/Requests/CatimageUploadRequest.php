@@ -24,7 +24,7 @@ class CatimageUploadRequest extends FormRequest
         return [
             'title' => 'required|string',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'text' => 'string|max:255',
+            'text' => 'required|string|max:255',
             'map_lat' => 'required|numeric',
             'map_lng' => 'required|numeric',
         ];
@@ -33,12 +33,13 @@ class CatimageUploadRequest extends FormRequest
     public function messages()
     {
         return [
-            'title.required' => ':attributeは必須項目です',
+            'title.required' => ':attributeを入力してください',
             'image.required' => ':attributeをアップロードしてください',
             'image.image' => ':attributeファイルをアップロードしてください',
             'image.mimes' => 'jpeg、png、jpg、gif、svgのいずれかの形式の:attributeをアップロードしてください',
             'image.max' => ':attributeサイズは2MB以下のもの、または2MB以下になるようにトリミングをお願いいたします',
-            'text.max' => '内容は255文字以下でお願いいたします',
+            'text.required' => ':attributeを入力してください',
+            'text.max' => ':attributeは255文字以下でお願いいたします',
             'map_lat.required' => '地図上で撮影場所をクリックしてください',
         ];
     }
@@ -48,7 +49,7 @@ class CatimageUploadRequest extends FormRequest
         return [
             'title' => 'タイトル',
             'image' => '画像',
-            'text' => '内容',
+            'text' => 'コメント',
         ];
     }
 }

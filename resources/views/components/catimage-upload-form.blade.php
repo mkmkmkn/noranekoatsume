@@ -13,10 +13,10 @@
                     <div class="right">
                         <input class="text-gray-900" type="text" name="title" value="{{ old('title') }}"
                             placeholder="画像タイトル" required>
+                        @if ($errors->has('title'))
+                            <span>{{ $errors->first('title') }}</span>
+                        @endif
                     </div>
-                    @if ($errors->has('title'))
-                        <span>{{ $errors->first('title') }}</span>
-                    @endif
                 </li>
                 <li>
                     <div class="left">
@@ -25,7 +25,7 @@
                     <div class="right">
                         <div class="top">
                             <label class="submit_button">画像を選ぶ
-                                <input type="file" name="src-img" accept="image/*" class="inputHidden">
+                                <input type="file" name="src-img" accept="image/*" class="imageFileInput">
                             </label>
                             <p class="fileName">画像が選択されていません</p>
                         </div>
@@ -33,7 +33,7 @@
                             <img id="preview" class="inputHidden">
                             <div id="original-size" class="inputHidden"></div>
                             <div id="compressed-size" class="inputHidden"></div>
-                            <p id="compressed-image"></p>
+                            <p id="compressed-image" class="compressed-image"></p>
                         </div>
                     </div>
                     <div class="inputHidden">
@@ -50,10 +50,10 @@
                     </div>
                     <div class="right">
                         <textarea class="form-control text-gray-900" rows="6" name="text" placeholder="画像のコメント">{{ old('text') }}</textarea>
+                        @if ($errors->has('text'))
+                            <span>{{ $errors->first('text') }}</span>
+                        @endif
                     </div>
-                    @if ($errors->has('text'))
-                        <span>{{ $errors->first('text') }}</span>
-                    @endif
                 </li>
                 <li>
                     <div class="left">
@@ -61,6 +61,9 @@
                     </div>
                     <div class="right">
                         <div id="formMap" class="formMap"></div>
+                        @if ($errors->has('map_lat'))
+                            <span>{{ $errors->first('map_lat') }}</span>
+                        @endif
                     </div>
                     <div class="inputHidden">
                         <p class="">緯度:</p>
@@ -70,9 +73,6 @@
                         <input class="text-gray-900" type="text" name="map_lng" id="lng"
                             value="{{ old('map_lng') }}" readonly required>
                     </div>
-                    @if ($errors->has('map_lat'))
-                        <span>{{ $errors->first('map_lat') }}</span>
-                    @endif
                 </li>
             </ul>
 

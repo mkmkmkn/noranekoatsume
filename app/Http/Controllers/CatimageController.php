@@ -14,8 +14,8 @@ class CatimageController extends Controller
 {
     public function index()
     {
-        $catImages = Catimage::with('nices','comments')->orderBy('id','desc')->paginate(10);
-        $niceGet = Catimage::with('nices')->orderBy('id','desc')->paginate(10);
+        $catImages = Catimage::with('nices','comments')->orderBy('id','desc')->paginate(5);
+        $niceGet = Catimage::with('nices')->orderBy('id','desc')->paginate(5);
 
         $nices = array();
         foreach ($niceGet as $catImage) {

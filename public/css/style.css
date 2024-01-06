@@ -1,3 +1,232 @@
+@charset "UTF-8";
+/* -----------------------------------------------
+レスポンシブ　表示/非表示切り替え
+----------------------------------------------- */
+.on1366,
+.on1024,
+.on768,
+.on480,
+.on375 {
+  display: none;
+}
+
+@media (width <= 1366px) {
+  .off1366 {
+    display: none;
+  }
+  .on1366 {
+    display: block;
+  }
+}
+@media (width <= 1024px) {
+  .off1024 {
+    display: none;
+  }
+  .on1024 {
+    display: block;
+  }
+}
+@media (width <= 768px) {
+  .off768 {
+    display: none;
+  }
+  .on768 {
+    display: block;
+  }
+}
+@media (width <= 480px) {
+  .off480 {
+    display: none;
+  }
+  .on480 {
+    display: block;
+  }
+}
+/* -----------------------------------------------
+フォント太さ
+----------------------------------------------- */
+.fl {
+  font-weight: 300;
+}
+
+.fr {
+  font-weight: 400;
+}
+
+.fm {
+  font-weight: 500;
+}
+
+.fb {
+  font-weight: 700;
+}
+
+/* -----------------------------------------------
+フォントサイズ
+----------------------------------------------- */
+.f12 {
+  font-size: 0.75rem;
+}
+
+.f14 {
+  font-size: 0.875rem;
+}
+
+.f16 {
+  font-size: 1rem;
+}
+
+.f18 {
+  font-size: 1.125rem;
+}
+
+.f20 {
+  font-size: 1.25rem;
+}
+
+.f24 {
+  font-size: 1.5rem;
+}
+
+.f28 {
+  font-size: 1.75rem;
+}
+
+.f32 {
+  font-size: 2rem;
+}
+
+.f40 {
+  font-size: 2.5rem;
+}
+
+.f48 {
+  font-size: 3rem;
+}
+
+.f64 {
+  font-size: 4rem;
+}
+
+/* -----------------------------------------------
+フォント高さ
+----------------------------------------------- */
+.lh1 {
+  line-height: 1;
+}
+
+.lh1\.25 {
+  line-height: 1.25;
+}
+
+.lh1\.5 {
+  line-height: 1.5;
+}
+
+.lh1\.75 {
+  line-height: 1.75;
+}
+
+.lh2 {
+  line-height: 2;
+}
+
+/* -----------------------------------------------
+フォントファミリー
+----------------------------------------------- */
+.kiwimaru {
+  font-family: Kiwi Maru, serif;
+}
+
+.kaisei {
+  font-family: Kaisei Opti, serif;
+}
+
+.roboto {
+  font-family: "Roboto", sans-serif;
+}
+
+.materialicon {
+  font-family: Material Symbols Outlined;
+  font-display: auto !important;
+  font-variation-settings: "FILL" 1, "wght" 400, "GRAD" 0, "opsz" 48;
+}
+
+/* -----------------------------------------------
+フォントカラー
+----------------------------------------------- */
+.fwhite {
+  color: white;
+}
+
+.fgray {
+  color: #666;
+}
+
+.fblack {
+  color: #000;
+}
+
+/* -----------------------------------------------
+カーソル　hoverしたらハイライト
+----------------------------------------------- */
+.opa {
+  transition: 0.3s;
+  cursor: pointer;
+}
+.opa:hover {
+  opacity: 0.7;
+}
+
+/* -----------------------------------------------
+カーソル　hoverしたら下線
+----------------------------------------------- */
+.underline_hover {
+  position: relative;
+}
+.underline_hover::before {
+  content: "";
+  opacity: 0;
+  position: absolute;
+  bottom: -0.125rem;
+  width: 100%;
+  left: 50%;
+  border-bottom: 1px solid;
+  transform: translate(-50%, 0);
+  transition: all 0.3s;
+}
+.underline_hover:hover::before {
+  opacity: 1;
+}
+
+/* -----------------------------------------------
+カーソル　hoverしたら画像ズーム
+----------------------------------------------- */
+.zoom_hover_inner {
+  overflow: hidden;
+}
+.zoom_hover_inner img {
+  transform: scale(1);
+  transition: 0.3s ease-in-out;
+}
+.zoom_hover:hover .zoom_hover_inner img {
+  transform: scale(1.2);
+}
+
+/* -----------------------------------------------
+その他
+----------------------------------------------- */
+.ellipsis {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+body {
+  font-family: Kiwi Maru, serif;
+  font-weight: 400;
+}
+
 .container {
   width: 94%;
   max-width: 780px;
@@ -14,7 +243,7 @@
   transition: all 0.3s;
   cursor: pointer;
 }
-.submit_button:hover {
+.submit_button:focus, .submit_button:hover {
   color: #333;
   background-color: white;
 }
@@ -95,6 +324,23 @@
 .catimage_upload_section .inputHidden {
   display: none;
 }
+.catimage_upload_section .imageFileInput {
+  width: 0;
+  height: 0;
+  /* 透明度0 */
+  filter: alpha(opacity=0);
+  -moz-opacity: 0;
+  opacity: 0;
+  /* ブラウザのデフォルトのスタイルを削除 */
+  -webkit-appearance: none;
+  appearance: none;
+  /* レイアウトから無視 */
+  position: absolute;
+}
+.catimage_upload_section .submit_button:has(.imageFileInput:focus) {
+  color: #333;
+  background-color: white;
+}
 .catimage_upload_section form {
   padding: 6% 4% 6%;
   border: 2px solid white;
@@ -117,12 +363,14 @@
 }
 .catimage_upload_list li .right {
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  align-items: flex-start;
   width: 60%;
 }
 .catimage_upload_list li input,
 .catimage_upload_list li textarea {
   width: 100%;
+  border-radius: 6px;
 }
 .catimage_upload_list li .fileName {
   margin-left: 3%;
@@ -135,6 +383,7 @@
   height: auto;
   aspect-ratio: 4/3;
   margin: auto;
+  border-radius: 6px;
 }
 .catimage_upload_list li:nth-child(2) .right {
   flex-direction: column;
@@ -156,4 +405,119 @@
 
 .profile_section .usericon_input {
   flex-direction: column;
+}
+
+.catimage_archive_section {
+  height: calc(58vh - 65px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow-y: scroll;
+}
+.catimage_archive_section textarea {
+  border-radius: 6px;
+}
+.catimage_archive_section .niced {
+  color: #ee0000;
+}
+.catimage_archive_section nav[role=navigation] {
+  margin-bottom: 3%;
+}
+.catimage_archive_section nav[role=navigation] > div.hidden {
+  margin-top: 4%;
+  justify-content: center;
+}
+.catimage_archive_section nav[role=navigation] > div.hidden > div:first-child {
+  display: none;
+}
+.catimage_archive_content {
+  margin-top: 5%;
+}
+.catimage_archive_item {
+  padding: 3%;
+  margin-bottom: 3%;
+  border-radius: 0.75rem;
+}
+.catimage_archive_item:last-child {
+  margin-bottom: 0;
+}
+.catimage_archive_item_name {
+  margin-bottom: 3%;
+  display: flex;
+  justify-content: space-between;
+}
+.catimage_archive_item_name .left {
+  display: flex;
+  align-items: center;
+}
+.catimage_archive_item_name .left img {
+  height: 50px;
+  width: 50px;
+  object-fit: cover;
+  border-radius: 100px;
+  margin-right: 0.5rem;
+}
+.catimage_archive_item_title {
+  margin-bottom: 3%;
+}
+.catimage_archive_item_comment {
+  margin-bottom: 3%;
+}
+.catimage_archive_item_image {
+  margin-bottom: 3%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.catimage_archive_item_image img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  max-height: 700px;
+}
+.catimage_archive_item_likeComment {
+  margin-bottom: 3%;
+  display: flex;
+  justify-content: space-between;
+}
+.catimage_archive_item_likeComment a {
+  display: flex;
+  align-items: center;
+}
+.catimage_archive_item_likeComment a .niceText {
+  margin-right: 0.125rem;
+}
+.catimage_archive_item_comment .comment_item {
+  margin-bottom: 3%;
+}
+.catimage_archive_item_comment .comment_item:last-child {
+  margin-bottom: 0;
+}
+.catimage_archive_item_comment .comment_item_name {
+  margin-bottom: 1%;
+  display: flex;
+  align-items: center;
+}
+.catimage_archive_item_comment .comment_item_name img {
+  height: 35px;
+  width: 35px;
+  object-fit: cover;
+  border-radius: 100px;
+  margin-right: 0.5rem;
+}
+.catimage_archive_item_comment .comment_item_delete {
+  margin-top: 1%;
+}
+.catimage_archive_item_commentForm textarea {
+  width: 100%;
+}
+.catimage_archive_item_commentForm .submit_button {
+  margin: auto;
+}
+.catimage_map_section {
+  height: 42vh;
+}
+.catimage_map_section #map {
+  width: 100%;
+  height: 100%;
 }/*# sourceMappingURL=style.css.map */

@@ -1,3 +1,6 @@
+@charset "utf-8";
+@use "_common.scss";
+
 .container {
     width: 94%;
     max-width: 780px;
@@ -14,6 +17,7 @@
     transition: all 0.3s;
     cursor: pointer;
 
+    &:focus,
     &:hover {
         color: #333;
         background-color: white;
@@ -117,6 +121,23 @@
         .inputHidden {
             display: none;
         }
+        .imageFileInput {
+            width: 0;
+            height: 0;
+            /* 透明度0 */
+            filter: alpha(opacity=0);
+            -moz-opacity: 0;
+            opacity: 0;
+            /* ブラウザのデフォルトのスタイルを削除 */
+            -webkit-appearance: none;
+            appearance: none;
+            /* レイアウトから無視 */
+            position: absolute;
+        }
+        .submit_button:has(.imageFileInput:focus) {
+            color: #333;
+            background-color: white;
+        }
         form {
             padding: 6% 4% 6%;
             border: 2px solid white;
@@ -142,12 +163,14 @@
             }
             .right {
                 display: flex;
-                align-items: center;
+                flex-direction: column;
+                align-items: flex-start;
                 width: 60%;
             }
             input,
             textarea {
                 width: 100%;
+                border-radius: 6px;
             }
             .fileName {
                 margin-left: 3%;
@@ -160,6 +183,7 @@
                 height: auto;
                 aspect-ratio: 4 / 3;
                 margin: auto;
+                border-radius: 6px;
             }
 
             &:nth-child(2) {
@@ -196,6 +220,146 @@
     &_section {
         .usericon_input {
             flex-direction: column;
+        }
+    }
+}
+
+.catimage {
+    &_archive {
+        &_section {
+            height: calc(100vh - 42vh - 65px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow-y: scroll;
+
+            textarea {
+                border-radius: 6px;
+            }
+            .niced {
+                color: #ee0000;
+            }
+            nav[role="navigation"] {
+                margin-bottom: 3%;
+
+                & > div.hidden {
+                    margin-top: 4%;
+                    justify-content: center;
+
+                    & > div:first-child {
+                        display: none;
+                    }
+                }
+            }
+        }
+        &_content {
+            margin-top: 5%;
+        }
+        &_item {
+            padding: 3%;
+            margin-bottom: 3%;
+            border-radius: 0.75rem;
+
+            &:last-child {
+                margin-bottom: 0;
+            }
+            &_name {
+                margin-bottom: 3%;
+                display: flex;
+                justify-content: space-between;
+
+                .left {
+                    display: flex;
+                    align-items: center;
+
+                    img {
+                        height: 50px;
+                        width: 50px;
+                        object-fit: cover;
+                        border-radius: 100px;
+                        margin-right: 0.5rem;
+                    }
+                }
+            }
+            &_title {
+                margin-bottom: 3%;
+            }
+            &_comment {
+                margin-bottom: 3%;
+            }
+            &_image {
+                margin-bottom: 3%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
+                img {
+                    width: 100%;
+                    height: auto;
+                    object-fit: contain;
+                    max-height: 700px;
+                }
+            }
+            &_likeComment {
+                margin-bottom: 3%;
+                display: flex;
+                justify-content: space-between;
+
+                a {
+                    display: flex;
+                    align-items: center;
+
+                    .niceText {
+                        margin-right: 0.125rem;
+                    }
+                }
+            }
+            &_comment {
+                .comment {
+                    &_item {
+                        margin-bottom: 3%;
+
+                        &:last-child {
+                            margin-bottom: 0;
+                        }
+                        &_name {
+                            margin-bottom: 1%;
+                            display: flex;
+                            align-items: center;
+
+                            img {
+                                height: 35px;
+                                width: 35px;
+                                object-fit: cover;
+                                border-radius: 100px;
+                                margin-right: 0.5rem;
+                            }
+                        }
+                        &_comment {}
+                        &_delete {
+                            margin-top: 1%;
+                        }
+                    }
+                }
+            }
+            &_commentForm {
+                textarea {
+                    width: 100%;
+                }
+                .submit_button {
+                    margin: auto;
+                }
+            }
+        }
+    }
+    &_map {
+        &_section {
+            height: 42vh;
+
+            #map {
+                width: 100%;
+                height: 100%;
+            }
         }
     }
 }
