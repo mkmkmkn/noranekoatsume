@@ -1,6 +1,7 @@
 async function initMap() {
     const { Map } = await google.maps.importLibrary("maps");
-    const japan = { lat: 35.0, lng: 135.3 };
+    const japan = { lat: 35.5, lng: 135.3 };
+    const formJapan = { lat: 35.0, lng: 135.3 };
 
     if (document.getElementById("map") != null) {
         map = new Map(document.getElementById("map"), {
@@ -25,7 +26,7 @@ async function initMap() {
 
     if (document.getElementById("formMap") != null) {
         formMap = new Map(document.getElementById("formMap"), {
-            center: japan,
+            center: formJapan,
             // zoom: 4.8,
             zoom: 4,
         });

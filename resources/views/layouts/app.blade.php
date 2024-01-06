@@ -8,8 +8,10 @@
         <title>{{ config('app.name', 'Laravel') }}</title>
 
         <!-- Fonts -->
-        <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+        {{-- <link rel="preconnect" href="https://fonts.bunny.net">
+        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" /> --}}
+        <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,1,0&display=auto" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Kaisei+Opti:wght@400;500;700&family=Kiwi+Maru:wght@300;400;500&display=swap" rel="stylesheet" />
         <link rel="stylesheet" href="{{ asset('/css/style.css') }}">
 
         <!-- Scripts -->
@@ -20,7 +22,7 @@
             crossorigin="anonymous">
         </script>
     </head>
-    <body class="font-sans antialiased">
+    <body class="antialiased">
         <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
             @include('layouts.navigation')
 
@@ -37,7 +39,7 @@
             <main>
                 @php
                 if(isset($slot)) {
-                    echo $slot; 
+                    echo $slot;
                 }
                 @endphp
                 @yield('content')
