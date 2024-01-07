@@ -225,4 +225,18 @@
 body {
   font-family: Kiwi Maru, serif;
   font-weight: 400;
+}
+
+body.welcome .header {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+body.welcome .header_nav {
+  margin-top: 1rem;
+}
+body.welcome .header_nav a:nth-child(2) {
+  margin-left: 0.75rem;
 }/*# sourceMappingURL=welcome.css.map */
