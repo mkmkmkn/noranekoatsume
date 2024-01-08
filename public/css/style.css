@@ -431,7 +431,7 @@ body {
   display: none;
 }
 .catimage_archive_content {
-  margin-top: 5%;
+  margin: 5% 0;
 }
 .catimage_archive_item {
   padding: 3%;

@@ -8,9 +8,11 @@
 @section('content')<!-- コンテンツ -->
 
 @if (session('message'))
+<div class="container">
     <p class="text-gray-800 dark:text-gray-200">{{ session('message') }}</p>
+</div>
 @endif
-    
+
 @php
     $catImagesArray = [];
     foreach($catImages as $item) {
