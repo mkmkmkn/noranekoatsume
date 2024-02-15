@@ -31,7 +31,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-        
+
     Route::get('/dashboard', [CatimageController::class, 'index'])->name('dashboard');
     Route::post('/destroy{id}', [CatimageController::class, 'destroy'])->name('catimage.destroy');
 
