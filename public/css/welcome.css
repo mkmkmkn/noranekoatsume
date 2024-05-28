@@ -374,6 +374,12 @@ body.welcome .underMv_section .editorial {
   left: 0px;
   float: left;
 }
+@media (prefers-color-scheme: light) {
+  body.welcome .underMv_section .editorial .parallax > use {
+    /* ライトモードの場合の設定を書く */
+    filter: brightness(100);
+  }
+}
 body.welcome .underMv_section .editorial .parallax1 > use {
   animation: move-forever1 10s linear infinite;
 }
