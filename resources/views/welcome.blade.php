@@ -138,16 +138,16 @@
                         58 18 88 18
                         v44h-352z" />
                     </defs>
-                    <g class="parallax1">
+                    <g class="parallax parallax1">
                         <use xlink:href="#gentle-wave" x="50" y="3" fill="#1f2937" />
                     </g>
-                    <g class="parallax2">
+                    <g class="parallax parallax2">
                         <use xlink:href="#gentle-wave" x="50" y="0" fill="#1f2937" />
                     </g>
-                    <g class="parallax3">
+                    <g class="parallax parallax3">
                         <use xlink:href="#gentle-wave" x="50" y="9" fill="#1f2937" />
                     </g>
-                    <g class="parallax4">
+                    <g class="parallax parallax4">
                         <use xlink:href="#gentle-wave" x="50" y="6" fill="#1f2937" />
                     </g>
                 </svg>
